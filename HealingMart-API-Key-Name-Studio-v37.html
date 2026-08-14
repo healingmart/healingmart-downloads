@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data: blob:; connect-src 'none'; font-src 'none'; object-src 'none'; media-src 'none'; frame-src 'none'; worker-src 'none'; child-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>HealingMart API Key Name Studio v37 · Secure RAM</title>
+<title>HealingMart API Key Name Studio v37.2 · Fresh Start</title>
 <style>
 :root{
   --bg:#f5f7fb;--panel:#fff;--line:#dde5ee;--line2:#edf1f5;
@@ -288,6 +288,7 @@ code{background:#eef3f8;color:#1f6f9c;border-radius:2px}
       <button class="btn" id="exportKeysOnly">키 이름만 내보내기</button>
       <button class="btn accent" id="downloadTool">HTML 파일 저장</button>
       <label class="btn" for="importState">전체 가져오기</label>
+      <button class="btn" id="loadSaved">저장목록 불러오기</button>
       <button class="btn" id="resetDefault">새로 시작</button>
       <button class="btn" id="clear">목록 비우기 · 실행취소 가능</button>
       <button class="btn danger" id="hardReset">로컬 데이터 완전 초기화</button>
@@ -314,10 +315,10 @@ code{background:#eef3f8;color:#1f6f9c;border-radius:2px}
     </div>
 
     <div class="security-strip">
-      <span>외부 연결 차단 CSP</span><span>실제키 RAM 전용</span><span>자동저장은 이름·KEY_NAME·그룹만</span><span>이름·KEY_NAME 검색</span>
+      <span>외부 연결 차단 CSP</span><span>실제키 RAM 전용</span><span>항상 빈 화면 시작</span><span>저장목록은 수동 복원</span><span>자동저장은 이름·KEY_NAME·그룹만</span><span>이름·KEY_NAME 검색</span>
     </div>
     <div class="help public-help">
-      예: <code>한국토지주택공사 청약정보</code>는 <code>LH_SUBSCRIPTION_API_KEY</code>처럼 기관 약칭을 사용합니다. <code>외교부_국가∙지역별 여행경보</code>는 <code>MOFA_TRAVEL_ALERT_API_KEY</code>, 조정 항목은 <code>MOFA_ALERT_UPDATE_API_KEY</code>처럼 짧게 구분합니다. <b>실제 API Key / Secret / Token 값은 localStorage에 자동 저장하지 않고 현재 페이지 메모리에서만 유지</b>합니다. 브라우저 자동저장에는 한글 이름, KEY_NAME, 그룹만 남습니다. 전체 JSON 백업과 .env는 사용자가 명시적으로 저장할 때만 실제값을 포함할 수 있습니다.
+      예: <code>한국토지주택공사 청약정보</code>는 <code>LH_SUBSCRIPTION_API_KEY</code>처럼 기관 약칭을 사용합니다. <code>외교부_국가∙지역별 여행경보</code>는 <code>MOFA_TRAVEL_ALERT_API_KEY</code>, 조정 항목은 <code>MOFA_ALERT_UPDATE_API_KEY</code>처럼 짧게 구분합니다. <b>실제 API Key / Secret / Token 값은 localStorage에 자동 저장하지 않고 현재 페이지 메모리에서만 유지</b>합니다. 브라우저 자동저장에는 한글 이름, KEY_NAME, 그룹만 남습니다. <b>이 공개본은 항상 빈 화면으로 시작하며, 저장된 이름·KEY_NAME·그룹은 ‘저장목록 불러오기’를 눌렀을 때만 복원합니다. 이전 버전 데이터는 자동 승계하지 않습니다.</b> 전체 JSON 백업과 .env는 사용자가 명시적으로 저장할 때만 실제값을 포함할 수 있습니다.
     </div>
     <div class="groups" id="groups"><div class="empty-groups">TXT 파일을 넣으면 대표 이름별로 자동 그룹화됩니다.</div></div>
   </section>
@@ -812,8 +813,8 @@ const KEY_USAGE = {};
 
 
 
-const STORAGE_KEY="healingmart_api_key_name_studio_public_v37_secure_ram";
-const PREVIOUS_STORAGE_KEYS=[
+const STORAGE_KEY="healingmart_api_key_name_studio_public_v37_2_fresh_start";
+const LEGACY_STORAGE_KEYS=[
   "healingmart_api_key_name_studio_public_v24",
   "healingmart_api_key_name_studio_public_v26_clean",
   "healingmart_api_key_name_studio_public_v28_clean",
@@ -823,7 +824,8 @@ const PREVIOUS_STORAGE_KEYS=[
   "healingmart_api_key_name_studio_public_v33_prefixbase",
   "healingmart_api_key_name_studio_public_v34_final",
   "healingmart_api_key_name_studio_public_v35_aliasfirst",
-  "healingmart_api_key_name_studio_public_v36_search"
+  "healingmart_api_key_name_studio_public_v36_search",
+  "healingmart_api_key_name_studio_public_v37_secure_ram"
 ];
 
 function persistentRows(sourceRows=rows){
@@ -851,51 +853,38 @@ function storedRowsToMemory(sourceRows){
 
 function autosave(){
   try{
-    localStorage.setItem(STORAGE_KEY,JSON.stringify({version:37,rows:persistentRows(rows)}));
+    localStorage.setItem(STORAGE_KEY,JSON.stringify({version:37.2,rows:persistentRows(rows)}));
   }catch(e){}
 }
 
 function removeLegacyStorage(){
+  // 과거 버전 데이터는 자동으로 읽지 않습니다.
+  // 사용자가 "로컬 데이터 완전 초기화"를 실행했을 때만 명시적으로 삭제합니다.
   try{
-    for(const oldKey of PREVIOUS_STORAGE_KEYS) localStorage.removeItem(oldKey);
+    for(const oldKey of LEGACY_STORAGE_KEYS) localStorage.removeItem(oldKey);
   }catch(e){}
 }
 
-function autoload(){
+function loadSavedRowsExplicitly(){
+  // 공개본은 항상 빈 화면으로 시작합니다.
+  // 사용자가 직접 요청한 경우에만 이 버전이 자동저장한 비민감 정보(이름·KEY_NAME·그룹)를 복원합니다.
   try{
-    let raw=localStorage.getItem(STORAGE_KEY);
-    let loadedFromLegacy=false;
-
+    const raw=localStorage.getItem(STORAGE_KEY);
     if(!raw){
-      for(const oldKey of PREVIOUS_STORAGE_KEYS){
-        const candidate=localStorage.getItem(oldKey);
-        if(!candidate) continue;
-        try{
-          const legacyData=JSON.parse(candidate);
-          if(legacyData && Array.isArray(legacyData.rows)){
-            raw=candidate;
-            loadedFromLegacy=true;
-            break;
-          }
-        }catch(e){}
-      }
-    }
-
-    if(!raw){
-      // v37 데이터가 없어도 과거 버전 저장소가 남아 있으면 제거합니다.
-      removeLegacyStorage();
+      showNotice("이 공개본에 저장된 이름·KEY_NAME·그룹 목록이 없습니다.");
       return false;
     }
 
     const data=JSON.parse(raw);
     if(data && Array.isArray(data.rows)){
-      rows=storedRowsToMemory(data.rows); // legacy value가 있어도 메모리에 복원하지 않음
-      autosave();                         // v37 형식으로 즉시 무민감정보 재저장
-      removeLegacyStorage();              // 과거 평문 value가 남을 수 있는 키 제거
+      rows=storedRowsToMemory(data.rows);
+      render();
+      resetHistory();
+      showNotice(`저장목록 ${rows.length}개를 불러왔습니다. 실제 인증키는 복원하지 않습니다.`);
       return true;
     }
   }catch(e){}
-  removeLegacyStorage();
+  alert("저장목록을 불러오지 못했습니다.");
   return false;
 }
 
@@ -1840,7 +1829,18 @@ function maskedEnvValue(value){
   return "••••••••";
 }
 
+function syncSecretInputsToRows(){
+  // 화면의 인증키 입력값을 현재 탭 RAM(rows)에 강제로 동기화합니다.
+  // 브라우저 자동완성/붙여넣기 등으로 input 이벤트가 누락되는 경우에도
+  // JSON 백업과 .env 내보내기에 현재 화면 값을 정확히 반영합니다.
+  document.querySelectorAll(".secretedit[data-si]").forEach(input=>{
+    const i=Number(input.dataset.si);
+    if(Number.isInteger(i) && rows[i]) rows[i].value=String(input.value||"");
+  });
+}
+
 function actualEnvText(){
+  syncSecretInputsToRows();
   return buildEnvText(rows);
 }
 
@@ -1879,7 +1879,7 @@ function performHardReset(){
   });
   try{
     localStorage.removeItem(STORAGE_KEY);
-    for(const oldKey of PREVIOUS_STORAGE_KEYS){ localStorage.removeItem(oldKey); }
+    for(const oldKey of LEGACY_STORAGE_KEYS){ localStorage.removeItem(oldKey); }
   }catch(e){}
 
   rows=clone(DEFAULT_ROWS);
@@ -1920,7 +1920,7 @@ function buildKeysOnlyText(sourceRows=rows){
 function buildStatePayload(sourceRows=rows){
   return {
     app:"HealingMart API Key Name Studio",
-    version:37,
+    version:37.2,
     exportedAt:new Date().toISOString(),
     rows:clone(sourceRows)
   };
@@ -1965,6 +1965,7 @@ function exportKeysOnly(){
 }
 
 function exportState(){
+  syncSecretInputsToRows();
   const hasActual=rows.some(r=>String(r.value||"").length>0);
   if(hasActual){
     const ok=confirm("실제 API Key / Secret / Token 값이 평문 JSON 파일에 포함됩니다. 개인 보관용으로만 사용하세요. 계속할까요?");
@@ -2015,7 +2016,7 @@ function downloadToolHtml(){
   const url=URL.createObjectURL(blob);
   const a=document.createElement("a");
   a.href=url;
-  a.download="HealingMart-API-Key-Name-Studio-v37-PUBLIC-SECURE-RAM.html";
+  a.download="HealingMart-API-Key-Name-Studio-v37.2-PUBLIC-FRESH-START.html";
   document.body.appendChild(a);
   a.click();
   a.remove();
@@ -2126,6 +2127,7 @@ document.getElementById("importState").addEventListener("change",e=>{
   importStateFile(e.target.files[0]);
   e.target.value="";
 });
+document.getElementById("loadSaved").addEventListener("click",loadSavedRowsExplicitly);
 
 document.getElementById("undo").addEventListener("click",()=>{ if(hIndex>0) restoreHistory(hIndex-1); });
 document.getElementById("redo").addEventListener("click",()=>{ if(hIndex<history.length-1) restoreHistory(hIndex+1); });
@@ -2181,6 +2183,7 @@ document.getElementById("toggleEnvSecret").addEventListener("click",()=>{
 });
 
 document.getElementById("copyEnv").addEventListener("click",async()=>{
+  syncSecretInputsToRows();
   const hasActual=rows.some(r=>String(r.value||"").length>0);
   if(!hasActual){
     await copyText(actualEnvText());
@@ -2194,6 +2197,7 @@ document.getElementById("copyEnv").addEventListener("click",async()=>{
 });
 document.getElementById("copyList").addEventListener("click",()=>copyText(document.getElementById("listOut").value));
 document.getElementById("downloadEnv").addEventListener("click",()=>{
+  syncSecretInputsToRows();
   const hasActual=rows.some(r=>String(r.value||"").length>0);
   if(hasActual){
     const ok=confirm("실제 API Key / Secret / Token 값이 포함된 .env 파일을 저장합니다. 계속할까요?");
@@ -2204,21 +2208,20 @@ document.getElementById("downloadEnv").addEventListener("click",()=>{
   const a=document.createElement("a");
   a.href=url;
   a.download=".env";
-  document.body.appendChild(a); 
+  document.body.appendChild(a);
   a.click();
   a.remove();
   setTimeout(()=>URL.revokeObjectURL(url),1000);
   showNotice(".env 파일을 저장했습니다.");
 });
 
-if(autoload()){
-  render();
-  resetHistory();
-}else{
-  rows=clone(DEFAULT_ROWS);
-  render();
-  resetHistory();
-}
+// PUBLIC FRESH START: 열 때마다 무조건 빈 화면으로 시작합니다.
+// 기존 자동저장 목록을 덮어쓰지 않도록 초기 진입에서는 autosave()를 호출하지 않습니다.
+rows=clone(DEFAULT_ROWS);
+render();
+history=[clone(rows)];
+hIndex=0;
+updateHistoryButtons();
 </script>
 </body>
 </html>
