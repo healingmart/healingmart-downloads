@@ -2,8 +2,9 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data: blob:; connect-src 'none'; font-src 'none'; object-src 'none'; media-src 'none'; frame-src 'none'; worker-src 'none'; child-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>HealingMart API Key Name Studio v36 · Light Edge</title>
+<title>HealingMart API Key Name Studio v37 · Secure RAM</title>
 <style>
 :root{
   --bg:#f5f7fb;--panel:#fff;--line:#dde5ee;--line2:#edf1f5;
@@ -153,7 +154,7 @@ code{background:#f2f4f7;padding:2px 5px;border-radius:5px}
 .usage-unused{color:#b42318;font-weight:700}
 
 
-/* ===== v36 PUBLIC / LOCAL — light edge editorial skin ===== */
+/* ===== v37 PUBLIC / LOCAL — light edge editorial skin ===== */
 :root{
   --bg:#f7f9fc;--panel:#ffffff;--panel2:#f9fbfd;--line:#d9e1ea;--line2:#edf1f5;
   --text:#18202b;--muted:#687386;--blue:#2678d8;--blue2:#edf6ff;
@@ -209,7 +210,7 @@ body:after{content:"";position:fixed;right:0;top:0;width:54px;height:54px;backgr
 code{background:#eef3f8;color:#1f6f9c;border-radius:2px}
 
 
-/* ===== v36 spreadsheet column tint + active selection ===== */
+/* ===== v37 spreadsheet column tint + active selection ===== */
 .group-table th:nth-child(1){background:#fff4d9;color:#7a5b16}
 .group-table th:nth-child(2){background:#eaf4ff;color:#245c8e}
 .group-table th:nth-child(3){background:#eaf8f0;color:#256b4e}
@@ -288,7 +289,7 @@ code{background:#eef3f8;color:#1f6f9c;border-radius:2px}
       <button class="btn accent" id="downloadTool">HTML 파일 저장</button>
       <label class="btn" for="importState">전체 가져오기</label>
       <button class="btn" id="resetDefault">새로 시작</button>
-      <button class="btn" id="clear">전체 지우기</button>
+      <button class="btn" id="clear">목록 비우기 · 실행취소 가능</button>
       <button class="btn danger" id="hardReset">로컬 데이터 완전 초기화</button>
       <div class="spacer"></div>
       <div class="stats" id="stats">0개</div>
@@ -313,10 +314,10 @@ code{background:#eef3f8;color:#1f6f9c;border-radius:2px}
     </div>
 
     <div class="security-strip">
-      <span>서버 업로드 없음</span><span>브라우저 로컬 처리</span><span>인증키 입력은 선택</span><span>이름·KEY_NAME 검색</span>
+      <span>외부 연결 차단 CSP</span><span>실제키 RAM 전용</span><span>자동저장은 이름·KEY_NAME·그룹만</span><span>이름·KEY_NAME 검색</span>
     </div>
     <div class="help public-help">
-      예: <code>한국토지주택공사 청약정보</code>는 <code>LH_SUBSCRIPTION_API_KEY</code>처럼 기관 약칭을 사용합니다. <code>외교부_국가∙지역별 여행경보</code>는 <code>MOFA_TRAVEL_ALERT_API_KEY</code>, 조정 항목은 <code>MOFA_ALERT_UPDATE_API_KEY</code>처럼 짧게 구분합니다. 자동 이름이 이미 존재해도 <code>KEY_2</code>, <code>KEY_3</code>처럼 숫자를 먼저 붙이지 않습니다. 이름만으로 구분하기 어려운 경우에는 목록에서 KEY_NAME을 직접 수정할 수 있습니다. 실제 인증키까지 저장하는 JSON 백업은 민감정보가 포함되므로 개인 보관용으로만 사용하세요.
+      예: <code>한국토지주택공사 청약정보</code>는 <code>LH_SUBSCRIPTION_API_KEY</code>처럼 기관 약칭을 사용합니다. <code>외교부_국가∙지역별 여행경보</code>는 <code>MOFA_TRAVEL_ALERT_API_KEY</code>, 조정 항목은 <code>MOFA_ALERT_UPDATE_API_KEY</code>처럼 짧게 구분합니다. <b>실제 API Key / Secret / Token 값은 localStorage에 자동 저장하지 않고 현재 페이지 메모리에서만 유지</b>합니다. 브라우저 자동저장에는 한글 이름, KEY_NAME, 그룹만 남습니다. 전체 JSON 백업과 .env는 사용자가 명시적으로 저장할 때만 실제값을 포함할 수 있습니다.
     </div>
     <div class="groups" id="groups"><div class="empty-groups">TXT 파일을 넣으면 대표 이름별로 자동 그룹화됩니다.</div></div>
   </section>
@@ -332,7 +333,7 @@ code{background:#eef3f8;color:#1f6f9c;border-radius:2px}
         </div>
       </div>
       <textarea id="envOut" readonly aria-label=".env 미리보기"></textarea>
-      <div class="help env-security-help">화면에는 실제 인증값을 기본으로 표시하지 않습니다. ‘실제값 보기’를 눌렀을 때만 현재 화면에 표시됩니다.</div>
+      <div class="help env-security-help">실제 인증값은 localStorage에 저장하지 않고 현재 탭의 메모리에서만 유지합니다. 화면에도 기본으로 숨기며 ‘실제값 보기’를 눌렀을 때만 표시됩니다.</div>
     </section>
     <section class="panel out">
       <div class="out-head">
@@ -382,12 +383,12 @@ code{background:#eef3f8;color:#1f6f9c;border-radius:2px}
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="resetTitle">
     <div class="modal-head">
       <h3 id="resetTitle">로컬 데이터를 완전히 초기화할까요?</h3>
-      <p>브라우저에 저장된 API 목록, 인증키, 수정 내역이 모두 삭제됩니다. 이 작업은 되돌릴 수 없습니다.</p>
+      <p>브라우저에 자동 저장된 이름·KEY_NAME·그룹, 현재 페이지 메모리의 실제 인증키, 실행취소 내역이 모두 삭제됩니다. 이 작업은 되돌릴 수 없습니다.</p>
     </div>
     <div class="modal-body">
       <div class="compare-box">
         <strong>권장</strong>
-        <div>초기화 전에 <b>전체 내보내기</b>로 JSON 백업 파일을 만들어두세요.</div>
+        <div>실제 인증키까지 보관해야 한다면 초기화 전에 <b>전체 JSON 백업 · 실제키 포함</b>으로 개인 백업 파일을 만들어두세요.</div>
       </div>
     </div>
     <div class="modal-actions">
@@ -811,38 +812,90 @@ const KEY_USAGE = {};
 
 
 
-const STORAGE_KEY="healingmart_api_key_name_studio_public_v36_search";
-const PREVIOUS_STORAGE_KEYS=[];
+const STORAGE_KEY="healingmart_api_key_name_studio_public_v37_secure_ram";
+const PREVIOUS_STORAGE_KEYS=[
+  "healingmart_api_key_name_studio_public_v24",
+  "healingmart_api_key_name_studio_public_v26_clean",
+  "healingmart_api_key_name_studio_public_v28_clean",
+  "healingmart_api_key_name_studio_public_v30_safe",
+  "healingmart_api_key_name_studio_public_v31_safe",
+  "healingmart_api_key_name_studio_public_v32_general",
+  "healingmart_api_key_name_studio_public_v33_prefixbase",
+  "healingmart_api_key_name_studio_public_v34_final",
+  "healingmart_api_key_name_studio_public_v35_aliasfirst",
+  "healingmart_api_key_name_studio_public_v36_search"
+];
+
+function persistentRows(sourceRows=rows){
+  // 실제 인증키 value와 kind는 영구저장하지 않습니다.
+  return sourceRows.map(r=>({
+    label:String(r.label||r.key||""),
+    key:String(r.key||""),
+    group:String(r.group||inferGroupName(r.label||r.key)||"")
+  }));
+}
+
+function storedRowsToMemory(sourceRows){
+  return (Array.isArray(sourceRows) ? sourceRows : [])
+    .filter(r=>r && r.key)
+    .map(r=>({
+      label:String(r.label||r.key),
+      key:String(r.key||"").toUpperCase()
+        .replace(/[^A-Z0-9_]/g,"_")
+        .replace(/_+/g,"_"),
+      value:"",
+      kind:"auto",
+      group:String(r.group||inferGroupName(r.label||r.key)||"")
+    }));
+}
 
 function autosave(){
   try{
-    localStorage.setItem(STORAGE_KEY,JSON.stringify({version:36,rows}));
+    localStorage.setItem(STORAGE_KEY,JSON.stringify({version:37,rows:persistentRows(rows)}));
   }catch(e){}
 }
+
+function removeLegacyStorage(){
+  try{
+    for(const oldKey of PREVIOUS_STORAGE_KEYS) localStorage.removeItem(oldKey);
+  }catch(e){}
+}
+
 function autoload(){
   try{
     let raw=localStorage.getItem(STORAGE_KEY);
+    let loadedFromLegacy=false;
 
     if(!raw){
       for(const oldKey of PREVIOUS_STORAGE_KEYS){
-        raw=localStorage.getItem(oldKey);
-        if(raw){
-          try{
-            localStorage.setItem(STORAGE_KEY,raw);
-          }catch(e){}
-          break;
-        }
+        const candidate=localStorage.getItem(oldKey);
+        if(!candidate) continue;
+        try{
+          const legacyData=JSON.parse(candidate);
+          if(legacyData && Array.isArray(legacyData.rows)){
+            raw=candidate;
+            loadedFromLegacy=true;
+            break;
+          }
+        }catch(e){}
       }
     }
 
-    if(!raw) return false;
+    if(!raw){
+      // v37 데이터가 없어도 과거 버전 저장소가 남아 있으면 제거합니다.
+      removeLegacyStorage();
+      return false;
+    }
 
     const data=JSON.parse(raw);
     if(data && Array.isArray(data.rows)){
-      rows=data.rows;
+      rows=storedRowsToMemory(data.rows); // legacy value가 있어도 메모리에 복원하지 않음
+      autosave();                         // v37 형식으로 즉시 무민감정보 재저장
+      removeLegacyStorage();              // 과거 평문 value가 남을 수 있는 키 제거
       return true;
     }
   }catch(e){}
+  removeLegacyStorage();
   return false;
 }
 
@@ -1820,6 +1873,10 @@ function performHardReset(){
   listSearchQuery="";
   const searchInput=document.getElementById("listSearch");
   if(searchInput) searchInput.value="";
+  ["mLabel","mKey","mValue"].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) el.value="";
+  });
   try{
     localStorage.removeItem(STORAGE_KEY);
     for(const oldKey of PREVIOUS_STORAGE_KEYS){ localStorage.removeItem(oldKey); }
@@ -1831,7 +1888,7 @@ function performHardReset(){
   render();
   updateHistoryButtons();
 
-  alert("로컬 저장 데이터를 완전히 삭제했습니다. 화면은 빈 목록으로 돌아왔습니다.");
+  alert("자동저장 데이터, 현재 페이지의 실제 인증키, 실행취소 내역을 모두 초기화했습니다.");
 }
 
 function openResetModal(){
@@ -1863,7 +1920,7 @@ function buildKeysOnlyText(sourceRows=rows){
 function buildStatePayload(sourceRows=rows){
   return {
     app:"HealingMart API Key Name Studio",
-    version:36,
+    version:37,
     exportedAt:new Date().toISOString(),
     rows:clone(sourceRows)
   };
@@ -1908,6 +1965,12 @@ function exportKeysOnly(){
 }
 
 function exportState(){
+  const hasActual=rows.some(r=>String(r.value||"").length>0);
+  if(hasActual){
+    const ok=confirm("실제 API Key / Secret / Token 값이 평문 JSON 파일에 포함됩니다. 개인 보관용으로만 사용하세요. 계속할까요?");
+    if(!ok) return false;
+  }
+
   const payload=buildStatePayload(rows);
   const blob=new Blob([JSON.stringify(payload,null,2)],{type:"application/json;charset=utf-8"});
   const a=document.createElement("a");
@@ -1917,6 +1980,8 @@ function exportState(){
   a.download=`HealingMart-API-KEY-Backup-${stamp}.json`;
   a.click();
   setTimeout(()=>URL.revokeObjectURL(a.href),700);
+  showNotice(hasActual ? "실제 인증값이 포함된 개인용 JSON 백업을 저장했습니다." : "JSON 백업을 저장했습니다.");
+  return true;
 }
 
 async function importStateFile(file){
@@ -1950,7 +2015,7 @@ function downloadToolHtml(){
   const url=URL.createObjectURL(blob);
   const a=document.createElement("a");
   a.href=url;
-  a.download="HealingMart-API-Key-Name-Studio-v36-PUBLIC-SEARCH.html";
+  a.download="HealingMart-API-Key-Name-Studio-v37-PUBLIC-SECURE-RAM.html";
   document.body.appendChild(a);
   a.click();
   a.remove();
@@ -2071,12 +2136,13 @@ document.getElementById("resetCancel").addEventListener("click",closeResetModal)
 
 document.getElementById("resetConfirm").addEventListener("click",()=>{
   closeResetModal();
-  const ok=confirm("정말로 브라우저에 저장된 API 목록과 인증키를 모두 삭제할까요?\n\n되돌릴 수 없습니다.");
+  const ok=confirm("자동저장된 이름·KEY_NAME·그룹과 현재 페이지 메모리의 실제 인증키, 실행취소 내역을 모두 삭제할까요?\n\n되돌릴 수 없습니다.");
   if(ok) performHardReset();
 });
 
 document.getElementById("resetExport").addEventListener("click",()=>{
-  exportState();
+  const saved=exportState();
+  if(!saved) return;
   closeResetModal();
   const ok=confirm("백업 파일을 저장했습니다.\n이제 로컬 데이터를 완전히 초기화할까요?");
   if(ok) performHardReset();
