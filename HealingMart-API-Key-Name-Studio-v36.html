@@ -1,0 +1,2158 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>HealingMart API Key Name Studio v36 · Light Edge</title>
+<style>
+:root{
+  --bg:#f5f7fb;--panel:#fff;--line:#dde5ee;--line2:#edf1f5;
+  --text:#182230;--muted:#667085;--blue:#276bd8;--blue2:#edf4ff;
+  --green:#067647;--green2:#ecfdf3;--orange:#b54708;--orange2:#fff7ed;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,"Noto Sans KR","Malgun Gothic",sans-serif}
+button,input,textarea{font:inherit}
+.app{width:min(1680px,calc(100% - 28px));margin:0 auto;padding:20px 0 34px}
+.header{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;margin-bottom:14px}
+.title h1{margin:0;font-size:27px;letter-spacing:-.4px}
+.title p{margin:5px 0 0;color:var(--muted);font-size:13px}
+.header-note{font-size:12px;color:var(--green);background:var(--green2);border:1px solid #abefc6;padding:7px 10px;border-radius:999px;white-space:nowrap}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:15px;box-shadow:0 4px 18px rgba(16,24,40,.045)}
+.drop{
+  min-height:118px;display:flex;align-items:center;justify-content:center;flex-direction:column;
+  border:2px dashed #c8d3e0;border-radius:13px;margin:14px;padding:18px;background:#fbfcfe;
+  transition:.15s
+}
+.drop.drag{border-color:var(--blue);background:var(--blue2)}
+.drop strong{font-size:16px}
+.drop span{margin-top:5px;color:var(--muted);font-size:12px}
+#files{display:none}
+.btn{
+  border:1px solid var(--line);background:#fff;color:var(--text);padding:9px 13px;border-radius:9px;
+  font-weight:700;cursor:pointer
+}
+.btn.primary{background:var(--blue);border-color:var(--blue);color:#fff}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.toolbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:0 14px 14px}
+.searchbar{display:flex;align-items:center;gap:10px;padding:12px 14px;border-top:1px solid #e8edf2;border-bottom:1px solid #e8edf2;background:#fff}
+.searchbox{position:relative;display:flex;align-items:center;flex:1;max-width:640px}
+.searchbox:before{content:"⌕";position:absolute;left:12px;top:50%;transform:translateY(-52%);font-size:20px;color:#697586;pointer-events:none}
+.searchbox input{width:100%;height:42px;border:1px solid #cfd7e2;border-radius:7px;background:#fbfcfe;padding:0 40px 0 40px;font:inherit;font-size:13px;color:#17202a;outline:none;transition:border-color .15s,box-shadow .15s,background .15s}
+.searchbox input:focus{border-color:#5b8fd8;box-shadow:0 0 0 3px rgba(36,111,211,.09);background:#fff}
+.search-clear{position:absolute;right:7px;top:50%;transform:translateY(-50%);width:28px;height:28px;border:0;background:transparent;border-radius:5px;color:#7b8794;font-size:18px;line-height:1;cursor:pointer}
+.search-clear:hover{background:#eef3f8;color:#243447}
+.search-meta{min-width:132px;font-size:12px;color:#667281;font-weight:700;text-align:right;white-space:nowrap}
+.search-meta strong{color:#246fd3}
+.search-empty{padding:38px 20px;text-align:center;border:1px dashed #d8e0e8;background:#fbfcfd;color:#6f7b88;font-size:13px}
+.spacer{flex:1}
+.stats{font-size:12px;color:var(--muted)}
+.tablebox{overflow:auto;border-top:1px solid var(--line)}
+table{width:100%;border-collapse:collapse;min-width:1050px}
+th{background:#f8fafc;color:#475467;font-size:12px;text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:2}
+td{padding:10px 12px;border-bottom:1px solid var(--line2);font-size:13px;vertical-align:middle}
+td:nth-child(1){width:32%;font-weight:700}
+td:nth-child(2){width:32%}
+td:nth-child(3){width:22%;font-family:Consolas,Menlo,monospace;color:#475467}
+td:nth-child(4){width:9%}
+td:nth-child(5){width:5%;text-align:right}
+.labeledit{width:100%;min-width:220px;border:1px solid transparent;background:transparent;padding:8px 9px;border-radius:8px;font:inherit;color:inherit}
+.labeledit:hover{border-color:var(--line);background:#fff}
+.labeledit:focus{outline:none;border-color:#98a2b3;background:#fff;box-shadow:0 0 0 3px rgba(152,162,179,.12)}
+.envedit{width:100%;border:1px solid transparent;background:transparent;border-radius:7px;padding:7px 8px;font-family:Consolas,Menlo,monospace;color:#244064;font-weight:700;outline:none}
+.envedit:hover{border-color:#d4dde8;background:#fff}
+.envedit:focus{border-color:#8eb3ef;background:#fff;box-shadow:0 0 0 3px rgba(39,107,216,.09)}
+.tag{display:inline-block;padding:4px 7px;border-radius:999px;font-size:11px;font-weight:800}
+.tag.old{background:#eef4ff;color:#175cd3}
+.tag.auto{background:#f2f4f7;color:#475467}
+.empty{padding:56px 20px;text-align:center;color:var(--muted)}
+.iconbtn{border:0;background:transparent;cursor:pointer;color:#98a2b3;font-size:18px;padding:5px}
+.iconbtn:hover{color:#d92d20}
+.manual{display:none;border-top:1px solid var(--line);padding:13px 14px;background:#fbfcfe}
+.manual.open{display:block}
+.manual-grid{display:grid;grid-template-columns:1.5fr 1.2fr 1.6fr auto;gap:8px}
+.manual input{width:100%;border:1px solid var(--line);border-radius:9px;padding:10px 11px;outline:none;background:#fff}
+.manual input:focus{border-color:#8eb3ef;box-shadow:0 0 0 3px rgba(39,107,216,.08)}
+.outputs{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
+.out{padding:14px}
+.out-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px}
+.out-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.env-security-help{margin-top:8px;color:#6f7782}
+#envOut.env-revealed{outline:2px solid rgba(198,91,64,.24);outline-offset:1px}
+
+.out-head h2{margin:0;font-size:14px}
+textarea{width:100%;min-height:210px;resize:vertical;border:1px solid var(--line);border-radius:10px;background:#fbfcfe;padding:12px;font:13px/1.6 Consolas,Menlo,monospace;outline:none}
+.help{margin-top:10px;font-size:12px;color:var(--muted);line-height:1.65}
+code{background:#f2f4f7;padding:2px 5px;border-radius:5px}
+@media(max-width:900px){
+  .app{width:min(100% - 18px,1680px);padding-top:10px}
+  .header{align-items:flex-start;flex-direction:column}
+  .header-note{white-space:normal}
+  .outputs{grid-template-columns:1fr}
+  .manual-grid{grid-template-columns:1fr}
+  .drop{margin:10px}
+}
+
+.groups{border-top:1px solid var(--line);padding:12px;background:#fbfcfe}
+.group-card{background:#fff;border:1px solid var(--line);border-radius:12px;margin-bottom:10px;overflow:hidden}
+.group-card:last-child{margin-bottom:0}
+.group-head{display:flex;align-items:center;gap:10px;width:100%;border:0;background:#fff;padding:12px 14px;cursor:pointer;text-align:left}
+.group-head:hover{background:#fafcff}
+.group-chevron{width:18px;color:#667085;font-size:12px;transition:.15s}
+.group-card.closed .group-chevron{transform:rotate(-90deg)}
+.group-name{font-size:15px;font-weight:800;color:#1d2939}
+.group-count{font-size:11px;color:#475467;background:#f2f4f7;border-radius:999px;padding:3px 7px}
+.group-actions{margin-left:auto;display:flex;gap:6px}
+.group-body{border-top:1px solid var(--line2)}
+.group-card.closed .group-body{display:none}
+.group-table{width:100%;border-collapse:collapse;min-width:1280px}
+.group-table th{position:static;background:#f8fafc}
+.group-table td:nth-child(1){width:23%}
+.group-table td:nth-child(2){width:24%}
+.group-table td:nth-child(3){width:21%}
+.group-table td:nth-child(4){width:24%}
+.group-table td:nth-child(5){width:5%}
+.empty-groups{padding:56px 20px;text-align:center;color:var(--muted)}
+
+
+.value-empty{color:#98a2b3;font-family:Arial,"Noto Sans KR","Malgun Gothic",sans-serif}
+.modal-backdrop{position:fixed;inset:0;background:rgba(16,24,40,.48);display:none;align-items:center;justify-content:center;padding:18px;z-index:9999}
+.modal-backdrop.open{display:flex}
+.modal{width:min(560px,100%);background:#fff;border-radius:16px;box-shadow:0 24px 80px rgba(16,24,40,.28);overflow:hidden}
+.modal-head{padding:18px 20px;border-bottom:1px solid var(--line)}
+.modal-head h3{margin:0;font-size:18px}
+.modal-head p{margin:6px 0 0;color:var(--muted);font-size:12px;line-height:1.5}
+.modal-body{padding:16px 20px}
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.compare-box{border:1px solid var(--line);border-radius:10px;padding:11px;background:#fbfcfe}
+.compare-box strong{display:block;font-size:12px;margin-bottom:7px}
+.compare-box div{font-size:12px;line-height:1.55;word-break:break-all}
+.modal-key{font-family:Consolas,Menlo,monospace;color:#244064}
+.modal-actions{display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap;padding:14px 20px;border-top:1px solid var(--line);background:#fbfcfe}
+.btn.danger{background:#d92d20;border-color:#d92d20;color:#fff}
+.btn.soft{background:#f2f4f7}
+
+
+.secret-wrap{display:flex;align-items:center;gap:6px;min-width:250px}
+.secretedit{flex:1;min-width:180px;border:1px solid transparent;background:transparent;padding:8px 9px;border-radius:8px;font:12px Consolas,Menlo,monospace;color:#344054}
+.secretedit:hover{border-color:var(--line);background:#fff}
+.secretedit:focus{outline:none;border-color:#98a2b3;background:#fff;box-shadow:0 0 0 3px rgba(152,162,179,.12)}
+.secret-toggle{flex:0 0 auto;width:34px;height:34px;border:1px solid var(--line);border-radius:8px;background:#fff;cursor:pointer;font-size:14px;line-height:1}
+.secret-toggle:hover{background:#f8fafc}
+.secretedit::placeholder{font-family:Arial,"Noto Sans KR","Malgun Gothic",sans-serif;color:#98a2b3}
+
+
+.shared-badge{display:inline-flex;align-items:center;margin-top:5px;padding:2px 7px;border-radius:999px;background:#eef4ff;color:#3538cd;font-size:10px;font-weight:800;white-space:nowrap}
+
+
+.usage-cell{font-size:11px;line-height:1.45;color:#475467}
+.usage-purpose{font-weight:700;color:#1d2939;margin-bottom:4px}
+.usage-projects{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:4px}
+.usage-project{display:inline-flex;padding:2px 6px;border-radius:999px;background:#f2f4f7;color:#344054;font-size:10px;font-weight:700}
+.usage-relation{color:#667085}
+.usage-unused{color:#b42318;font-weight:700}
+
+
+/* ===== v36 PUBLIC / LOCAL — light edge editorial skin ===== */
+:root{
+  --bg:#f7f9fc;--panel:#ffffff;--panel2:#f9fbfd;--line:#d9e1ea;--line2:#edf1f5;
+  --text:#18202b;--muted:#687386;--blue:#2678d8;--blue2:#edf6ff;
+  --green:#16845b;--green2:#eefaf5;--orange:#b55d10;--orange2:#fff7ed;
+  --violet:#6c5ce7;--cyan:#20a6d8;--ink:#111827;
+}
+html,body{min-height:100%;background:var(--bg);color:var(--text)}
+body{
+  background-image:
+    linear-gradient(rgba(45,71,102,.045) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(45,71,102,.045) 1px,transparent 1px),
+    radial-gradient(circle at 78% -5%,rgba(108,92,231,.08),transparent 28%),
+    radial-gradient(circle at 3% 80%,rgba(32,166,216,.055),transparent 24%);
+  background-size:48px 48px,48px 48px,auto,auto;
+  background-attachment:fixed;
+}
+body:after{content:"";position:fixed;right:0;top:0;width:54px;height:54px;background:#172033;clip-path:polygon(100% 0,0 0,100% 100%);z-index:20;pointer-events:none}
+.app{width:min(1680px,calc(100% - 56px));padding:38px 0 54px}
+.hero{padding:2px 0 30px;border-bottom:1px solid #d8e0e8;margin-bottom:28px}
+.hero-top{display:flex;align-items:center;justify-content:space-between;gap:20px;margin-bottom:34px}
+.kicker{display:flex;align-items:center;gap:12px;color:#536174;font-size:12px;font-weight:900;letter-spacing:1.7px}
+.kicker span{display:inline-block;width:38px;height:2px;background:linear-gradient(90deg,#6c5ce7,#20a6d8)}
+.local-badge{display:inline-flex;align-items:center;gap:8px;border:1px solid #b7e2ce;background:#f2fbf7;color:#16724f;padding:9px 13px;font-size:11px;font-weight:900;letter-spacing:.45px}
+.local-badge i{width:8px;height:8px;border-radius:50%;background:#22a06b;box-shadow:0 0 0 3px rgba(34,160,107,.10)}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(420px,.65fr);gap:56px;align-items:end}
+.hero-copy h1{margin:0;font-size:clamp(42px,4.5vw,72px);line-height:1.02;letter-spacing:-3px;font-weight:950;color:#121821}
+.hero-copy p{max-width:900px;margin:22px 0 0;color:#687386;font-size:15px;line-height:1.9}
+.hero-copy b{color:#2f3d50}
+.spec-grid{display:grid;grid-template-columns:1fr 1fr;border:1px solid #d8e0e8;background:rgba(255,255,255,.72)}
+.spec{min-height:76px;padding:16px 18px;border-right:1px solid #d8e0e8;border-bottom:1px solid #d8e0e8;display:flex;flex-direction:column;justify-content:center;gap:5px}
+.spec:nth-child(2n){border-right:0}.spec:nth-last-child(-n+2){border-bottom:0}
+.spec small{font-size:9px;letter-spacing:.7px;color:#8b96a5;font-weight:900}.spec strong{font-size:12px;color:#283445}
+.panel{background:rgba(255,255,255,.93);border:1px solid #d8e0e8;border-radius:0;box-shadow:0 18px 50px rgba(31,47,67,.055)}
+.drop{position:relative;min-height:250px;margin:0;border:0;border-radius:0;background:linear-gradient(180deg,#ffffff,#f9fbfd);overflow:hidden}
+.drop:before,.drop:after{content:"";position:absolute;width:62px;height:62px;pointer-events:none}
+.drop:before{left:22px;top:22px;border-left:2px solid #6c5ce7;border-top:2px solid #6c5ce7}
+.drop:after{right:22px;bottom:22px;border-right:2px solid #20a6d8;border-bottom:2px solid #20a6d8}
+.drop.drag{background:#f1f7ff;box-shadow:inset 0 0 0 1px #6c5ce7}
+.drop-plus{width:58px;height:58px;display:grid;place-items:center;margin-bottom:18px;border:1px solid #c4baf5;background:#f3f0ff;font-size:31px;color:#5f4fd7}
+.drop strong{font-size:18px;color:#1b2430}.drop span{margin-top:8px;color:#7d8898;font-size:12px}
+.toolbar{padding:14px 16px;border-top:1px solid #e0e6ed;background:#fbfcfe}
+.btn{border:1px solid #ced7e1;background:#fff;color:#2d3948;border-radius:2px;padding:10px 13px;font-size:12px;font-weight:800;transition:.16s}
+.btn:hover{background:#f6f8fb;border-color:#98a8bb;color:#111827}.btn.primary{background:#202b3a;border-color:#202b3a;color:#fff;box-shadow:none}
+.btn.primary:hover{background:#111827;border-color:#111827}.btn.accent{border-color:#86cce7;background:#eef9fd;color:#147ca4}.btn.danger{background:#fff7f7;border-color:#efb6bd;color:#b42338}.btn.soft{background:#f8fafc}
+.stats{color:#7a8696}.manual{border-top:1px solid #e0e6ed;background:#fbfcfe}.manual input,.labeledit,.envedit,.secretedit{background:#fff!important;border-color:#d7dfe8!important;color:#182230!important;border-radius:2px!important}.manual input::placeholder,.secretedit::placeholder{color:#9aa4b2}.manual input:focus,.labeledit:focus,.envedit:focus,.secretedit:focus{border-color:#6f8fba!important;box-shadow:0 0 0 3px rgba(38,120,216,.08)!important}
+.help{color:#788596}.public-help{padding:13px 16px 16px;line-height:1.8;border-top:1px solid #e3e8ee;background:#fff}.public-help b{color:#334155}.public-help code{background:#eef4f9;color:#1d6895;border-radius:2px}
+.security-strip{display:flex;flex-wrap:wrap;gap:8px;padding:12px 16px 0;border-top:1px solid #e0e6ed;background:#fbfcfe}.security-strip span{border:1px solid #d7dfe8;background:#fff;padding:6px 9px;color:#677487;font-size:10px;font-weight:800}
+.groups{border-top:1px solid #dfe5ec;padding:14px;background:#f7f9fb}.group-card{background:#fff;border-color:#d7dfe8;border-radius:0}.group-head{background:#fbfcfe;color:#1f2937}.group-head:hover{background:#f4f7fa}.group-body{border-top-color:#dfe5ec}.group-name{color:#1a2430}.group-count{background:#edf1f5;color:#687386;border-radius:2px}.group-chevron{color:#7a8696}
+.group-table{min-width:1040px}.group-table th{background:#f7f9fb;color:#667085;border-bottom-color:#d8e0e8;font-size:10px;letter-spacing:.5px}.group-table td{border-bottom-color:#edf1f4;color:#344054}.group-table td:nth-child(1){width:28%}.group-table td:nth-child(2){width:27%}.group-table td:nth-child(3){width:34%}.group-table td:nth-child(4){width:7%}.group-table td:nth-child(5){width:4%}
+.secret-toggle{background:#f8fafc;border-color:#d5dee8;color:#667085;border-radius:2px}.secret-toggle:hover{background:#eef2f6}.shared-badge{background:#edf5ff;color:#2d6fb3;border-radius:2px}.tag{border-radius:2px}.tag.old{background:#edf6ff;color:#1769aa}.tag.auto{background:#f3f0ff;color:#5b4ac8}.iconbtn{color:#98a2b3}.iconbtn:hover{color:#c3263e}.value-empty{color:#98a2b3}.empty-groups{color:#7b8796}
+.outputs{gap:16px;margin-top:16px}.out{padding:16px}.out-head h2{color:#202a36;letter-spacing:-.2px}.out-head{margin-bottom:12px}textarea{background:#fbfcfe;border-color:#d7dfe8;color:#25466f;border-radius:2px;min-height:235px}
+.modal-backdrop{background:rgba(17,24,39,.22);backdrop-filter:blur(3px)}.modal{background:#fff;border:1px solid #cfd8e3;border-radius:2px;color:#1f2937;box-shadow:0 22px 70px rgba(31,41,55,.14)}.modal-head,.modal-actions{border-color:#e0e6ed;background:#fbfcfe}.modal-head p{color:#7b8796}.compare-box{background:#fbfcfe;border-color:#d8e0e8}.modal-key{color:#236eac}
+code{background:#eef3f8;color:#1f6f9c;border-radius:2px}
+
+
+/* ===== v36 spreadsheet column tint + active selection ===== */
+.group-table th:nth-child(1){background:#fff4d9;color:#7a5b16}
+.group-table th:nth-child(2){background:#eaf4ff;color:#245c8e}
+.group-table th:nth-child(3){background:#eaf8f0;color:#256b4e}
+.group-table th:nth-child(4){background:#f2edff;color:#6651a5}
+.group-table th:nth-child(5){background:#f3f5f7;color:#667085}
+.group-table td:nth-child(1){background:#fffaf0}
+.group-table td:nth-child(2){background:#f4f9ff}
+.group-table td:nth-child(3){background:#f2fbf6}
+.group-table td:nth-child(4){background:#f8f5ff}
+.group-table td:nth-child(5){background:#fafbfc}
+.group-table td{transition:background .12s, box-shadow .12s}
+.group-table tr.row-selected td:nth-child(1){background:#fff0c7}
+.group-table tr.row-selected td:nth-child(2){background:#dfefff}
+.group-table tr.row-selected td:nth-child(3){background:#def5e8}
+.group-table tr.row-selected td:nth-child(4){background:#eee7ff}
+.group-table tr.row-selected td:nth-child(5){background:#eef2f6}
+.group-table td.cell-selected{position:relative;box-shadow:inset 0 0 0 2px #6888ad}
+.group-table td:nth-child(1).cell-selected{background:#ffe5a3}
+.group-table td:nth-child(2).cell-selected{background:#cfe7ff}
+.group-table td:nth-child(3).cell-selected{background:#cdeedb}
+.group-table td:nth-child(4).cell-selected{background:#e2d8ff}
+.group-table td:nth-child(5).cell-selected{background:#e2e7ec}
+.group-table td .labeledit,.group-table td .envedit,.group-table td .secretedit{background:transparent!important;border-color:transparent!important}
+.group-table td.cell-selected .labeledit,.group-table td.cell-selected .envedit,.group-table td.cell-selected .secretedit{background:rgba(255,255,255,.55)!important;border-color:rgba(104,136,173,.35)!important}
+.group-table tr:hover td{filter:brightness(.995)}
+
+@media(max-width:1050px){
+  .app{width:min(100% - 28px,1680px);padding-top:24px}.hero-grid{grid-template-columns:1fr;gap:28px}.spec-grid{max-width:620px}.hero-copy h1{letter-spacing:-2px}
+}
+@media(max-width:760px){
+  body:after{width:34px;height:34px}.app{width:100%;padding:0 0 30px}.hero{padding:24px 18px 22px;margin:0}.hero-top{margin-bottom:24px;align-items:flex-start}.kicker{font-size:9px;letter-spacing:1px}.kicker span{width:24px}.local-badge{padding:7px 9px;font-size:9px}.hero-copy h1{font-size:39px;letter-spacing:-2.4px}.hero-copy p{font-size:13px;line-height:1.75}.spec-grid{grid-template-columns:1fr 1fr}.spec{min-height:67px;padding:12px}.spec strong{font-size:10px}
+  .panel{border-left:0;border-right:0}.drop{min-height:220px;padding:34px 18px}.drop:before{left:14px;top:14px}.drop:after{right:14px;bottom:14px}.drop strong{text-align:center;font-size:16px}.drop span{text-align:center;line-height:1.6}.toolbar{padding:12px;gap:7px}.btn{padding:9px 10px;font-size:11px}.spacer{display:none}.stats{width:100%;padding-top:2px}.searchbar{padding:10px 12px;gap:7px;flex-wrap:wrap}.searchbox{max-width:none;width:100%;flex-basis:100%}.search-meta{min-width:0;width:100%;text-align:left;padding-left:2px}.manual{padding:12px}.security-strip{padding:10px 12px 0}.public-help{padding:11px 12px 14px;font-size:11px}.groups{padding:8px}
+  .group-card{margin-bottom:8px}.group-head{padding:11px}.group-table{min-width:0;width:100%}.group-table thead{display:none}.group-table tbody,.group-table tr,.group-table td{display:block;width:100%!important}.group-table tr{padding:10px 10px 12px;border-bottom:1px solid #e2e8f0}.group-table td{padding:6px 0;border:0}.group-table td:before{content:attr(data-label);display:block;margin-bottom:5px;color:#8793a3;font-size:9px;font-weight:900;letter-spacing:.6px}.labeledit,.envedit,.secretedit{width:100%;min-width:0}.secret-wrap{min-width:0}.secretedit{min-width:0}.group-table td:last-child{padding-top:0}.group-table td:last-child:before{display:none}.iconbtn{padding:3px 8px;border:1px solid #efcbd0;background:#fff7f8;color:#b42338}.outputs{grid-template-columns:1fr;gap:10px;margin-top:10px}.out{padding:12px}.modal{width:100%}.compare{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="hero">
+    <div class="hero-top">
+      <div class="kicker"><span></span> HEALINGMART / API KEY NAME STUDIO</div>
+      <div class="local-badge"><i></i> LOCAL PROCESSING · EMPTY PUBLIC BUILD</div>
+    </div>
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <h1>API 키는 정리하고,<br>이름은 의미 있게.</h1>
+        <p>TXT에서 API 키를 읽고, KEY_NAME은 <b>공식·통용 기관 약칭을 최우선</b>으로 사용하고, 기능명은 짧은 영어 의미어로 바꿉니다. <b>API_KEY까지 포함해 최대 5토큰</b>으로 압축하며, 로마자 표기는 약칭이나 번역어를 찾지 못했을 때만 마지막 fallback으로 사용합니다. 파일과 인증키는 서버로 전송하지 않고 현재 브라우저 안에서만 처리합니다.</p>
+      </div>
+      <div class="spec-grid" aria-label="도구 기능 요약">
+        <div class="spec"><small>INPUT</small><strong>TXT · 직접 입력</strong></div>
+        <div class="spec"><small>NAMING</small><strong>의미 기반 KEY_NAME</strong></div>
+        <div class="spec"><small>EXPORT</small><strong>.env · TXT · JSON</strong></div>
+        <div class="spec"><small>SECURITY</small><strong>Local · No Upload</strong></div>
+      </div>
+    </div>
+  </header>
+
+
+  <section class="panel">
+    <label class="drop" id="drop" for="files">
+      <div class="drop-plus">+</div><strong>API 키 TXT 파일을 여기에 놓으세요</strong>
+      <span>여러 TXT를 한꺼번에 넣어도 됩니다 · KEY_NAME이 없으면 이름을 분석해 자동 생성합니다</span>
+      <input id="files" type="file" accept=".txt,text/plain" multiple>
+      <input id="importState" type="file" accept=".json,application/json" style="display:none">
+    </label>
+
+    <div class="toolbar">
+      <label class="btn primary" for="files">TXT 선택</label>
+      <button class="btn" id="manualToggle">+ 수동 추가</button>
+      <button class="btn" id="undo" disabled>← 이전</button>
+      <button class="btn" id="redo" disabled>이후 →</button>
+      <button class="btn" id="expandAll">전체 펼치기</button>
+      <button class="btn" id="collapseAll">전체 접기</button>
+      <button class="btn" id="exportState">전체 JSON 백업 · 실제키 포함</button>
+      <button class="btn" id="exportKeysOnly">키 이름만 내보내기</button>
+      <button class="btn accent" id="downloadTool">HTML 파일 저장</button>
+      <label class="btn" for="importState">전체 가져오기</label>
+      <button class="btn" id="resetDefault">새로 시작</button>
+      <button class="btn" id="clear">전체 지우기</button>
+      <button class="btn danger" id="hardReset">로컬 데이터 완전 초기화</button>
+      <div class="spacer"></div>
+      <div class="stats" id="stats">0개</div>
+    </div>
+
+    <div class="searchbar" role="search" aria-label="API KEY_NAME 목록 검색">
+      <div class="searchbox">
+        <input id="listSearch" type="search" placeholder="한글 이름 · KEY_NAME · 기관명 검색" autocomplete="off" spellcheck="false" aria-label="목록 검색">
+        <button class="search-clear" id="searchClear" type="button" title="검색어 지우기" aria-label="검색어 지우기">×</button>
+      </div>
+      <div class="search-meta" id="searchMeta">전체 0개</div>
+    </div>
+
+    <div class="manual" id="manual">
+      <div class="manual-grid">
+        <input id="mLabel" placeholder="한글 이름">
+        <input id="mKey" placeholder="KEY_NAME (비우면 자동 생성)">
+        <input id="mValue" type="password" placeholder="인증키" autocomplete="off" spellcheck="false">
+        <button class="btn primary" id="manualAdd">추가</button>
+      </div>
+      <div class="help">새 API 이름만 먼저 등록해도 됩니다. 인증키는 선택이며, KEY_NAME을 비우면 의미 기반으로 자동 생성합니다.</div>
+    </div>
+
+    <div class="security-strip">
+      <span>서버 업로드 없음</span><span>브라우저 로컬 처리</span><span>인증키 입력은 선택</span><span>이름·KEY_NAME 검색</span>
+    </div>
+    <div class="help public-help">
+      예: <code>한국토지주택공사 청약정보</code>는 <code>LH_SUBSCRIPTION_API_KEY</code>처럼 기관 약칭을 사용합니다. <code>외교부_국가∙지역별 여행경보</code>는 <code>MOFA_TRAVEL_ALERT_API_KEY</code>, 조정 항목은 <code>MOFA_ALERT_UPDATE_API_KEY</code>처럼 짧게 구분합니다. 자동 이름이 이미 존재해도 <code>KEY_2</code>, <code>KEY_3</code>처럼 숫자를 먼저 붙이지 않습니다. 이름만으로 구분하기 어려운 경우에는 목록에서 KEY_NAME을 직접 수정할 수 있습니다. 실제 인증키까지 저장하는 JSON 백업은 민감정보가 포함되므로 개인 보관용으로만 사용하세요.
+    </div>
+    <div class="groups" id="groups"><div class="empty-groups">TXT 파일을 넣으면 대표 이름별로 자동 그룹화됩니다.</div></div>
+  </section>
+
+  <div class="outputs">
+    <section class="panel out">
+      <div class="out-head">
+        <h2>.env / 서버리스 환경변수</h2>
+        <div class="out-actions">
+          <button class="btn" id="toggleEnvSecret" type="button">실제값 보기</button>
+          <button class="btn" id="copyEnv" type="button">실제 .env 복사</button>
+          <button class="btn" id="downloadEnv" type="button">.env 파일 저장</button>
+        </div>
+      </div>
+      <textarea id="envOut" readonly aria-label=".env 미리보기"></textarea>
+      <div class="help env-security-help">화면에는 실제 인증값을 기본으로 표시하지 않습니다. ‘실제값 보기’를 눌렀을 때만 현재 화면에 표시됩니다.</div>
+    </section>
+    <section class="panel out">
+      <div class="out-head">
+        <h2>KEY_NAME 관리 목록</h2>
+        <button class="btn" id="copyList">전체 복사</button>
+      </div>
+      <textarea id="listOut" readonly></textarea>
+    </section>
+  </div>
+</div>
+
+
+
+<div class="modal-backdrop" id="dupModal">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="dupTitle">
+    <div class="modal-head">
+      <h3 id="dupTitle">같은 KEY_NAME이 이미 있습니다</h3>
+      <p>같은 KEY_NAME이 이미 있습니다. 한글 이름의 차이를 기준으로 추천 KEY_NAME이 있으면 바로 적용할 수 있습니다.</p>
+    </div>
+    <div class="modal-body">
+      <div class="modal-key" id="dupKey"></div>
+      <div class="compare-box" id="dupSuggestBox" style="margin-top:12px;display:none">
+        <strong>추천 추가 KEY_NAME</strong>
+        <div id="dupSuggested" style="margin-top:6px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-weight:800"></div>
+      </div>
+      <div class="compare" style="margin-top:12px">
+        <div class="compare-box">
+          <strong>현재 저장된 항목</strong>
+          <div id="dupOld"></div>
+        </div>
+        <div class="compare-box">
+          <strong>새로 들어온 항목</strong>
+          <div id="dupNew"></div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn soft" id="dupKeep">기존 유지</button>
+      <button class="btn" id="dupAdd">추천 이름으로 추가</button>
+      <button class="btn danger" id="dupOverwrite">새 값으로 덮어쓰기</button>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal-backdrop" id="resetModal">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="resetTitle">
+    <div class="modal-head">
+      <h3 id="resetTitle">로컬 데이터를 완전히 초기화할까요?</h3>
+      <p>브라우저에 저장된 API 목록, 인증키, 수정 내역이 모두 삭제됩니다. 이 작업은 되돌릴 수 없습니다.</p>
+    </div>
+    <div class="modal-body">
+      <div class="compare-box">
+        <strong>권장</strong>
+        <div>초기화 전에 <b>전체 내보내기</b>로 JSON 백업 파일을 만들어두세요.</div>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn soft" id="resetCancel">취소</button>
+      <button class="btn" id="resetExport">백업 후 초기화</button>
+      <button class="btn danger" id="resetConfirm">백업 없이 완전 초기화</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/*
+  공개용 네이밍 사전 + 일반 fallback 규칙.
+  개인 API 목록이나 실제 인증값을 내장하지 않습니다.
+  알려진 기관/기능은 짧은 영어 토큰으로 바꾸고, 처음 보는 한글은 로마자 fallback을 사용합니다.
+*/
+const ORGANIZATION_ALIASES = [
+  ["한국토지주택공사","LH"],
+  ["한국철도공사","KORAIL"],
+  ["한국전력공사","KEPCO"],
+  ["한국가스공사","KOGAS"],
+  ["한국석유공사","KNOC"],
+  ["한국수자원공사","KWATER"],
+  ["한국도로공사","EX"],
+  ["국가철도공단","KR"],
+  ["한국공항공사","KAC"],
+  ["인천국제공항공사","IIAC"],
+  ["한국관광공사","KTO"],
+  ["한국천문연구원","KASI"],
+  ["한국수출입은행","KEXIM"],
+  ["대한무역투자진흥공사","KOTRA"],
+  ["한국무역보험공사","KSURE"],
+  ["한국주택금융공사","HF"],
+  ["주택도시보증공사","HUG"],
+  ["국민건강보험공단","NHIS"],
+  ["국민연금공단","NPS"],
+  ["한국산업인력공단","HRDK"],
+  ["한국인터넷진흥원","KISA"],
+  ["한국소비자원","KCA"],
+  ["중소벤처기업진흥공단","KOSME"],
+  ["한국장학재단","KOSAF"],
+  ["한국거래소","KRX"],
+  ["한국은행","BOK"],
+  ["금융위원회","FSC"],
+  ["금융감독원","FSS"],
+  ["금융결제원","KFTC"],
+  ["예금보험공사","KDIC"],
+  ["한국사회보장정보원","SSIS"]
+];
+
+const SEMANTIC_TERMS = [
+  ["한국토지주택공사","LH"],
+  ["토지","LAND"],
+  ["주택금융","HOUSING_FINANCE"],
+  ["주택","HOUSING"],
+  ["도시","CITY"],
+  ["보증","GUARANTEE"],
+  ["철도","RAIL"],
+  ["도로","ROAD"],
+  ["공항","AIRPORT"],
+  ["전력","POWER"],
+  ["가스","GAS"],
+  ["석유","OIL"],
+  ["수자원","WATER"],
+  ["무역","TRADE"],
+  ["보험","INSURANCE"],
+  ["인터넷","INTERNET"],
+  ["소비자","CONSUMER"],
+  ["장학","SCHOLARSHIP"],
+  ["교통","TRANSPORT"],
+  ["환경","ENVIRONMENT"],
+  ["한국사회보장정보원","SSIS"],
+  // 기관/제공처 — 자주 쓰이는 공식·통용 약칭
+  ["개인정보보호위원회","PIPC"],
+  ["한국천문연구원","KASI"],
+  ["한국관광공사","KTO"],
+  ["한국산업인력공단","HRDK"],
+  ["한국수출입은행","KEXIM"],
+  ["금융감독원","FSS"],
+  ["금융위원회","FSC"],
+  ["식품의약품안전처","MFDS"],
+  ["행정안전부","MOIS"],
+  ["보건복지부","MOHW"],
+  ["국토교통부","MOLIT"],
+  ["문화체육관광부","MCST"],
+  ["산업통상자원부","MOTIE"],
+  ["과학기술정보통신부","MSIT"],
+  ["고용노동부","MOEL"],
+  ["중소벤처기업부","MSS"],
+  ["농림축산식품부","MAFRA"],
+  ["해양수산부","MOF"],
+  ["외교부","MOFA"],
+  ["교육부","MOE"],
+  ["환경부","ME"],
+  ["기상청","KMA"],
+  ["국세청","NTS"],
+  ["관세청","KCS"],
+  ["통계청","KOSTAT"],
+  ["경찰청","KNPA"],
+  ["소방청","NFA"],
+  ["산림청","KFS"],
+  ["병무청","MMA"],
+  ["법제처","MOLEG"],
+  ["한국은행","BOK"],
+  ["한국거래소","KRX"],
+
+  // 복합 개념 — 긴 표현을 먼저 잡아 의미를 유지
+  ["중앙부처복지서비스","CENTRAL_WELFARE"],
+  ["중앙부처 복지서비스","CENTRAL_WELFARE"],
+  ["회수 및 판매중지","RECALL"],
+  ["판매중지 및 회수","RECALL"],
+  ["회수·판매중지","RECALL"],
+  ["전기차 충전소","EV_CHARGER"],
+  ["지역별 방문자수","REGIONAL_VISITORS"],
+  ["지역 방문자수","REGIONAL_VISITORS"],
+  ["지역 방문자","REGIONAL_VISITORS"],
+  ["관광 수요 강도","TOURISM_DEMAND_INTENSITY"],
+  ["관광지 집중률 예측","TOURISM_CONCENTRATION_FORECAST"],
+  ["관광 집중도","TOURISM_CONCENTRATION"],
+  ["검색광고","SEARCH_ADS"],
+  ["공공데이터","PUBLIC_DATA"],
+  ["오픈 API","OPEN_API"],
+  ["오픈API","OPEN_API"],
+  ["REST API","REST_API"],
+  ["네이티브 앱","NATIVE_APP"],
+  ["관리자 키","ADMIN_KEY"],
+  ["일출·일몰","SUNRISE_SUNSET"],
+  ["일출 일몰","SUNRISE_SUNSET"],
+  ["월출·월몰","MOONRISE_MOONSET"],
+  ["월출 월몰","MOONRISE_MOONSET"],
+  ["음양력","LUNISOLAR_CALENDAR"],
+  ["태양 고도","SOLAR_ALTITUDE"],
+  ["태양고도","SOLAR_ALTITUDE"],
+  ["단기 예보","SHORT_TERM_FORECAST"],
+  ["단기예보","SHORT_TERM_FORECAST"],
+  ["초단기 예보","ULTRA_SHORT_TERM_FORECAST"],
+  ["초단기예보","ULTRA_SHORT_TERM_FORECAST"],
+  ["초단기 실황","ULTRA_SHORT_OBSERVATION"],
+  ["기상특보","WEATHER_ALERT"],
+  ["여행 경보","TRAVEL_ALERT"],
+  ["여행경보","TRAVEL_ALERT"],
+  ["시장 지수","MARKET_INDEX"],
+  ["시장지수","MARKET_INDEX"],
+  ["일반 상품","GENERAL_PRODUCT"],
+  ["일반상품","GENERAL_PRODUCT"],
+  ["식품 영양","FOOD_NUTRITION"],
+  ["식품영양","FOOD_NUTRITION"],
+  ["대기 질","AIR_QUALITY"],
+  ["대기질","AIR_QUALITY"],
+  ["API 허브","API_HUB"],
+  ["API허브","API_HUB"],
+
+  // 대상/분야
+  ["여행","TRAVEL"],
+  ["해외","OVERSEAS"],
+  ["국가","COUNTRY"],
+  ["지역","REGIONAL"],
+  ["관광지","ATTRACTION"],
+  ["관광","TOURISM"],
+  ["방문자","VISITORS"],
+  ["정책","POLICY"],
+  ["법령","LAW"],
+  ["법률","LAW"],
+  ["공휴일","HOLIDAY"],
+  ["대체공휴일","SUBSTITUTE_HOLIDAY"],
+  ["절기","SOLAR_TERM"],
+  ["날씨","WEATHER"],
+  ["기상","WEATHER"],
+  ["예보","FORECAST"],
+  ["실황","OBSERVATION"],
+  ["강수","PRECIPITATION"],
+  ["바람","WIND"],
+  ["기온","TEMPERATURE"],
+  ["대기","AIR"],
+  ["경보","ALERT"],
+  ["특보","ALERT"],
+  ["주의보","ADVISORY"],
+  ["경고","WARNING"],
+  ["재난","DISASTER"],
+  ["안전","SAFETY"],
+  ["지도","MAP"],
+  ["위치","LOCATION"],
+  ["주소","ADDRESS"],
+  ["교통","TRAFFIC"],
+  ["도로","ROAD"],
+  ["주유소","GAS_STATION"],
+  ["충전소","CHARGER"],
+  ["전기차","EV"],
+  ["자동차","VEHICLE"],
+  ["금융","FINANCE"],
+  ["시장","MARKET"],
+  ["지수","INDEX"],
+  ["상품","PRODUCT"],
+  ["증권","SECURITIES"],
+  ["주식","STOCK"],
+  ["환율","EXCHANGE_RATE"],
+  ["금리","INTEREST_RATE"],
+  ["대출","LOAN"],
+  ["국제","INTERNATIONAL"],
+  ["수출입","EXPORT_IMPORT"],
+  ["관세","CUSTOMS"],
+  ["세금","TAX"],
+  ["가격","PRICE"],
+  ["결제","PAYMENT"],
+  ["식품","FOOD"],
+  ["영양","NUTRITION"],
+  ["의약품","DRUG"],
+  ["리콜","RECALL"],
+  ["회수","RECALL"],
+  ["판매중지","SALES_SUSPENSION"],
+  ["복지","WELFARE"],
+  ["지원금","SUBSIDY"],
+  ["주거","HOUSING"],
+  ["청약","SUBSCRIPTION"],
+  ["자격","LICENSE"],
+  ["자격증","LICENSE"],
+  ["일정","SCHEDULE"],
+  ["교육","EDUCATION"],
+  ["통계","STATISTICS"],
+  ["데이터","DATA"],
+  ["뉴스","NEWS"],
+  ["이미지","IMAGE"],
+  ["영상","VIDEO"],
+  ["파일","FILE"],
+  ["메일","MAIL"],
+  ["이메일","EMAIL"],
+  ["메시지","MESSAGE"],
+  ["광고","ADS"],
+  ["검색","SEARCH"],
+  ["분석","ANALYTICS"],
+  ["보고서","REPORT"],
+  ["리포트","REPORT"],
+  ["번역","TRANSLATION"],
+  ["서비스","SERVICE"],
+  ["웹","WEB"],
+  ["앱","APP"],
+
+  // 동작/목적
+  ["조정","UPDATE"],
+  ["변경","UPDATE"],
+  ["수정","UPDATE"],
+  ["갱신","UPDATE"],
+  ["업데이트","UPDATE"],
+  ["조회","LOOKUP"],
+  ["검색","SEARCH"],
+  ["확인","CHECK"],
+  ["목록","LIST"],
+  ["상세","DETAIL"],
+  ["예측","FORECAST"],
+  ["분석","ANALYSIS"],
+  ["비교","COMPARE"],
+  ["계산","CALCULATE"],
+  ["변환","CONVERT"],
+  ["생성","GENERATE"],
+  ["등록","REGISTER"],
+  ["신청","APPLICATION"],
+  ["발급","ISSUE"],
+  ["수집","COLLECT"],
+  ["저장","STORAGE"],
+  ["업로드","UPLOAD"],
+  ["다운로드","DOWNLOAD"],
+  ["알림","NOTIFICATION"],
+  ["모니터링","MONITORING"],
+  ["실시간","REALTIME"],
+  ["현재","CURRENT"],
+  ["최신","LATEST"],
+
+  // 인증/개발 용어
+  ["JavaScript","JAVASCRIPT"],
+  ["Javascript","JAVASCRIPT"],
+  ["javascript","JAVASCRIPT"],
+  ["Native App","NATIVE_APP"],
+  ["native app","NATIVE_APP"],
+  ["Admin Key","ADMIN_KEY"],
+  ["admin key","ADMIN_KEY"],
+  ["클라이언트","CLIENT"],
+  ["고객","CUSTOMER"],
+  ["사용자","USER"],
+  ["관리자","ADMIN"],
+  ["개발자","DEVELOPER"],
+  ["공용","SHARED"],
+  ["공통","COMMON"],
+  ["접근","ACCESS"],
+  ["액세스","ACCESS"],
+  ["비밀","SECRET"],
+  ["시크릿","SECRET"],
+  ["토큰","TOKEN"],
+  ["인증","AUTH"],
+  ["지역별","REGIONAL"],
+  ["국가별","COUNTRY"],
+  ["정보","INFO"],
+  ["제공","PROVIDE"],
+  ["상세정보","DETAIL"],
+  ["상세","DETAIL"],
+  ["일반","GENERAL"],
+  ["기간","PERIOD"]
+];
+
+const SEMANTIC_SORTED = [...SEMANTIC_TERMS]
+  .map(([source,target],order)=>({source,target,order}))
+  .sort((a,b)=>b.source.length-a.source.length || a.order-b.order);
+
+const RR_INITIAL = ["g","kk","n","d","tt","r","m","b","pp","s","ss","","j","jj","ch","k","t","p","h"];
+const RR_MEDIAL  = ["a","ae","ya","yae","eo","e","yeo","ye","o","wa","wae","oe","yo","u","wo","we","wi","yu","eu","ui","i"];
+const RR_FINAL   = ["","k","k","k","n","n","n","t","l","k","m","l","l","l","p","l","m","p","p","t","t","ng","t","t","k","t","p","h"];
+
+function romanizeHangul(text){
+  let out="";
+  for(const ch of String(text||"")){
+    const code=ch.charCodeAt(0);
+    if(code>=0xAC00 && code<=0xD7A3){
+      const n=code-0xAC00;
+      const i=Math.floor(n/588);
+      const m=Math.floor((n%588)/28);
+      const f=n%28;
+      out+=RR_INITIAL[i]+RR_MEDIAL[m]+RR_FINAL[f];
+    }else if(/[A-Za-z0-9]/.test(ch)){
+      out+=ch;
+    }else{
+      out+="_";
+    }
+  }
+  return out.toUpperCase()
+    .replace(/[^A-Z0-9_]/g,"_")
+    .replace(/_+/g,"_")
+    .replace(/^_+|_+$/g,"");
+}
+
+function compactFallbackToken(token){
+  let t=romanizeHangul(token);
+  if(!t) return "";
+  if(t.length>18) t=t.slice(0,18);
+  return t;
+}
+
+function fallbackTokens(segment){
+  const out=[];
+  const re=/[가-힣]+|[A-Za-z][A-Za-z0-9-]*|\d+/g;
+  let m;
+  while((m=re.exec(String(segment||"")))){
+    const raw=m[0];
+    let token="";
+    if(/[가-힣]/.test(raw)) token=compactFallbackToken(raw);
+    else token=raw.toUpperCase().replace(/-/g,"_").replace(/[^A-Z0-9_]/g,"_");
+    if(!token || ["API","KEY","AUTH","SERVICE"].includes(token)) continue;
+    if(!out.includes(token)) out.push(token);
+  }
+  return out;
+}
+
+function semanticMatches(label){
+  const text=String(label||"");
+  const lower=text.toLowerCase();
+  const candidates=[];
+
+  // 1순위: 기관의 공식/통용 약칭이 있으면 긴 한글 기관명을 그대로 로마자화하지 않습니다.
+  for(const [source,target] of ORGANIZATION_ALIASES){
+    const needle=String(source).toLowerCase();
+    const pos=lower.indexOf(needle);
+    if(pos>=0){
+      candidates.push({
+        start:pos,
+        end:pos+source.length,
+        length:source.length+1000,
+        target
+      });
+    }
+  }
+
+  for(const item of SEMANTIC_SORTED){
+    const needle=item.source.toLowerCase();
+    let from=0;
+    while(needle && from<lower.length){
+      const pos=lower.indexOf(needle,from);
+      if(pos<0) break;
+      candidates.push({
+        start:pos,
+        end:pos+item.source.length,
+        length:item.source.length,
+        target:item.target
+      });
+      from=pos+Math.max(1,item.source.length);
+    }
+  }
+
+  candidates.sort((a,b)=>a.start-b.start || b.length-a.length);
+  const selected=[];
+  for(const c of candidates){
+    if(selected.some(s=>c.start<s.end && c.end>s.start)) continue;
+    selected.push(c);
+  }
+  selected.sort((a,b)=>a.start-b.start);
+
+  const tokens=[];
+  let cursor=0;
+  const add=(token)=>{
+    String(token||"").split("_").forEach(part=>{
+      part=String(part||"").trim().toUpperCase();
+      if(part && !tokens.includes(part)) tokens.push(part);
+    });
+  };
+
+  for(const m of selected){
+    if(m.start>cursor) fallbackTokens(text.slice(cursor,m.start)).forEach(add);
+    add(m.target);
+    cursor=Math.max(cursor,m.end);
+  }
+  if(cursor<text.length) fallbackTokens(text.slice(cursor)).forEach(add);
+  if(!tokens.length) fallbackTokens(text).forEach(add);
+
+  return tokens;
+}
+
+let rows=[];
+let history=[];
+let hIndex=-1;
+
+const DEFAULT_ROWS = [];
+
+const KEY_USAGE = {};
+
+
+
+const STORAGE_KEY="healingmart_api_key_name_studio_public_v36_search";
+const PREVIOUS_STORAGE_KEYS=[];
+
+function autosave(){
+  try{
+    localStorage.setItem(STORAGE_KEY,JSON.stringify({version:36,rows}));
+  }catch(e){}
+}
+function autoload(){
+  try{
+    let raw=localStorage.getItem(STORAGE_KEY);
+
+    if(!raw){
+      for(const oldKey of PREVIOUS_STORAGE_KEYS){
+        raw=localStorage.getItem(oldKey);
+        if(raw){
+          try{
+            localStorage.setItem(STORAGE_KEY,raw);
+          }catch(e){}
+          break;
+        }
+      }
+    }
+
+    if(!raw) return false;
+
+    const data=JSON.parse(raw);
+    if(data && Array.isArray(data.rows)){
+      rows=data.rows;
+      return true;
+    }
+  }catch(e){}
+  return false;
+}
+
+function clone(v){ return JSON.parse(JSON.stringify(v)); }
+
+function saveHistory(){
+  history=history.slice(0,hIndex+1);
+  history.push(clone(rows));
+  hIndex=history.length-1;
+  if(history.length>80){ history.shift(); hIndex--; }
+  updateHistoryButtons();
+  autosave();
+}
+function resetHistory(){
+  history=[clone(rows)];
+  hIndex=0;
+  updateHistoryButtons();
+  autosave();
+}
+function restoreHistory(i){
+  if(i<0 || i>=history.length) return;
+  hIndex=i;
+  rows=clone(history[hIndex]);
+  render();
+  updateHistoryButtons();
+  autosave();
+}
+function updateHistoryButtons(){
+  document.getElementById("undo").disabled=hIndex<=0;
+  document.getElementById("redo").disabled=hIndex<0 || hIndex>=history.length-1;
+}
+
+function stripExt(name){ return name.replace(/\.[^.]+$/,"").trim(); }
+function cleanLabel(name){
+  return stripExt(name)
+    .replace(/^[\d._\-\s]+/,"")
+    .replace(/\s+/g," ")
+    .trim();
+}
+function isEnvName(s){ return /^[A-Z][A-Z0-9_]{2,}$/.test(String(s||"").trim()); }
+function esc(s){ return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c])); }
+function mask(v){
+  v=String(v||"");
+  if(!v) return "";
+  if(v.length<=8) return "••••••••";
+  return v.slice(0,4)+"••••••••"+v.slice(-4);
+}
+
+function looksLikeSecret(s){
+  s=String(s||"").trim().replace(/^["']|["']$/g,"");
+  if(!s || isEnvName(s)) return false;
+  if(s.length<4) return false;
+  if(/[가-힣]/.test(s) && /\s/.test(s)) return false;
+  return /^[A-Za-z0-9_\-\.~+\/=:%]+$/.test(s);
+}
+
+function cleanSectionLabel(s){
+  return String(s||"")
+    .trim()
+    .replace(/^\[|\]$/g,"")
+    .replace(/^#+\s*/,"")
+    .replace(/^[\-\*•]+\s*/,"")
+    .replace(/\s+/g," ")
+    .trim();
+}
+
+
+function canonicalGroupNames(){
+  // 공개용은 특정 사용자의 기관 목록을 하드코딩하지 않습니다.
+  // 현재 데이터에 이미 저장된 대표 그룹만 참고합니다.
+  const names=[...new Set(rows.map(r=>String(r.group||"").trim()).filter(Boolean))];
+  return names.sort((a,b)=>b.length-a.length);
+}
+
+function cleanGroupSource(text){
+  return cleanLabel(String(text||""))
+    .replace(/^\[([^\]]+)\]\s*/,"$1 ")
+    .replace(/^[\[\]{}()<>]+|[\[\]{}()<>]+$/g,"")
+    .replace(/\s+/g," ")
+    .trim();
+}
+
+function organizationPrefix(text){
+  const s=cleanGroupSource(text);
+  if(!s) return "";
+
+  // 같은 제공기관 이름 뒤에 서비스명이 붙어도 하나의 그룹으로 묶습니다.
+  // 예: 금융위원회_시장지수 / 금융위원회 일반상품 / 금융위원회-증권 → 금융위원회
+  // 특정 사용자의 기관 목록을 넣지 않고 일반적인 조직명 접미사만 인식합니다.
+  // 따라서 금융위원회, 기상청, 한국○○연구원처럼 같은 기관명 뒤에
+  // 서비스명이 붙어도 공개용 도구 자체는 특정 API 목록에 종속되지 않습니다.
+  const generic=/^(.+?(?:위원회|연구원|진흥원|평가원|개발원|정보원|공단|공사|거래소|은행|재단|협회|센터|본부|청|부|처|포털))(?=$|[\s_\-:|/·,.()[\]{}]|(?=[가-힣A-Za-z0-9]))/;
+  const m=s.match(generic);
+  if(m && m[1]) return m[1].trim();
+
+  return "";
+}
+
+function firstNameToken(text){
+  const s=cleanGroupSource(text);
+  if(!s) return "기타";
+
+  const org=organizationPrefix(s);
+  if(org) return org;
+
+  // 구분자 앞의 첫 이름을 그룹명으로 사용합니다. underscore도 구분자로 취급합니다.
+  const token=(s.match(/^[^\s_\-:|/·,.()[\]{}]+/)||[])[0] || s.split(/\s+/)[0] || "기타";
+  return token;
+}
+
+function groupCompareKey(name){
+  return cleanGroupSource(name)
+    .toLowerCase()
+    .replace(/[\s_\-:|/·,.()[\]{}]+/g,"");
+}
+
+function normalizeGroupName(labelOrGroup){
+  const s=cleanGroupSource(labelOrGroup);
+  if(!s) return "기타";
+
+  const org=organizationPrefix(s);
+  if(org) return org;
+
+  const first=firstNameToken(s);
+  const canonical=canonicalGroupNames();
+  const firstKey=groupCompareKey(first);
+
+  // 이미 존재하는 같은 이름의 그룹은 공백/기호 차이가 있어도 하나로 합칩니다.
+  for(const group of canonical){
+    if(groupCompareKey(group)===firstKey) return group;
+  }
+
+  return first || "기타";
+}
+
+function inferGroupName(label){
+  return normalizeGroupName(label);
+}
+
+let listSearchQuery="";
+
+function normalizeSearchText(value){
+  return String(value||"")
+    .toLowerCase()
+    .normalize("NFKC")
+    .replace(/[·∙•]/g," ")
+    .replace(/[_\-\/]+/g," ")
+    .replace(/\s+/g," ")
+    .trim();
+}
+
+function rowMatchesSearch(row,query){
+  const q=normalizeSearchText(query);
+  if(!q) return true;
+  const terms=q.split(" ").filter(Boolean);
+  const group=inferGroupName(row.label)||row.group||"";
+  // 보안상 실제 인증키/Secret/Token 값은 검색 대상에 포함하지 않습니다.
+  const haystack=normalizeSearchText([row.label,row.key,group].join(" "));
+  return terms.every(term=>haystack.includes(term));
+}
+
+function groupRows(query=""){
+  const map=new Map();
+  const displayByKey=new Map();
+
+  rows.forEach((r,idx)=>{
+    if(query && !rowMatchesSearch(r,query)) return;
+    // 표시 이름에서 대표 기관/이름을 다시 계산합니다.
+    // 예전에 잘못 저장된 group 값보다 현재 label을 우선합니다.
+    let group=normalizeGroupName(r.label);
+    if(!group || group==="기타") group=normalizeGroupName(r.group);
+    group=group || "기타";
+
+    const compare=groupCompareKey(group) || "기타";
+    if(displayByKey.has(compare)) group=displayByKey.get(compare);
+    else displayByKey.set(compare,group);
+
+    r.group=group;
+    if(!map.has(group)) map.set(group,[]);
+    map.get(group).push({row:r,index:idx});
+  });
+
+  return map;
+}
+
+function parseTxt(text, fileLabel){
+  const raw=text.replace(/\r/g,"").split("\n");
+  const entries=[];
+  let pendingLabel="";
+
+  function add(label,key,value,existing){
+    label=cleanSectionLabel(label||"");
+    value=String(value||"").trim().replace(/^["']|["']$/g,"");
+    if(!value) return;
+    entries.push({
+      label: label || fileLabel,
+      key: key || "",
+      value,
+      existing: !!existing
+    });
+  }
+
+  for(let i=0;i<raw.length;i++){
+    let line=raw[i].trim();
+    if(!line || /^(#|\/\/|;)\s*$/.test(line)) continue;
+
+    // [REST API 키] / [JavaScript 키] 같은 섹션 제목
+    if(/^\[.+\]$/.test(line)){
+      pendingLabel=cleanSectionLabel(line);
+      continue;
+    }
+
+    // 한글명 — KEY_NAME — actualKey
+    let m=line.match(/^(.+?)\s*(?:—|–|\|)\s*([A-Z][A-Z0-9_]{2,})\s*(?:—|–|\||:|=)\s*(.+)$/);
+    if(m){
+      add(m[1],m[2],m[3],true);
+      pendingLabel="";
+      continue;
+    }
+
+    // label : KEY_NAME=value
+    m=line.match(/^(.+?)\s*[:|]\s*([A-Z][A-Z0-9_]{2,})\s*=\s*(.+)$/);
+    if(m){
+      add(m[1],m[2],m[3],true);
+      pendingLabel="";
+      continue;
+    }
+
+    // KEY_NAME=value
+    m=line.match(/^(?:export\s+)?([A-Z][A-Z0-9_]{2,})\s*=\s*(.+)$/);
+    if(m){
+      add(pendingLabel||m[1],m[1],m[2],true);
+      pendingLabel="";
+      continue;
+    }
+
+    // label : actualKey (KEY_NAME 없음)
+    m=line.match(/^(.+?)\s*[:=|]\s*([A-Za-z0-9_\-\.~+\/=:%]{4,})$/);
+    if(m && !isEnvName(m[1].trim())){
+      add(m[1],"",m[2],false);
+      pendingLabel="";
+      continue;
+    }
+
+    // [섹션명] 다음 줄이 KEY_NAME인지 실제 키인지 구분
+    if(pendingLabel && isEnvName(line)){
+      const next=(raw[i+1]||"").trim();
+      if(looksLikeSecret(next)){
+        add(pendingLabel,line,next,true);
+        pendingLabel="";
+        i++;
+        continue;
+      }
+      // 다음 줄에 실제 키가 없으면 현재 대문자 문자열 자체를 실제 키로 취급
+      add(pendingLabel,"",line,false);
+      pendingLabel="";
+      continue;
+    }
+
+    // KEY_NAME 단독 + 다음줄 actualKey
+    if(isEnvName(line)){
+      const next=(raw[i+1]||"").trim();
+      if(looksLikeSecret(next)){
+        add(line,line,next,true);
+        pendingLabel="";
+        i++;
+        continue;
+      }
+      pendingLabel=line;
+      continue;
+    }
+
+    // pending section/label + actualKey
+    if(pendingLabel && looksLikeSecret(line)){
+      add(pendingLabel,"",line,false);
+      pendingLabel="";
+      continue;
+    }
+
+    // 일반 설명줄 + 다음줄 actualKey 또는 KEY_NAME=value
+    const next=(raw[i+1]||"").trim();
+    if(!looksLikeSecret(line) && !isEnvName(line)){
+      if(looksLikeSecret(next)){
+        add(line,"",next,false);
+        pendingLabel="";
+        i++;
+        continue;
+      }
+      if(/^(?:export\s+)?[A-Z][A-Z0-9_]{2,}\s*=/.test(next)){
+        pendingLabel=cleanSectionLabel(line);
+        continue;
+      }
+      pendingLabel=cleanSectionLabel(line);
+      continue;
+    }
+
+    // 라벨 없이 실제키만 있는 단순 파일
+    if(looksLikeSecret(line)){
+      add(fileLabel,"",line,false);
+      pendingLabel="";
+      continue;
+    }
+  }
+
+  return entries;
+}
+const MAX_KEY_TOKENS=5;
+const LOW_VALUE_TOKENS=new Set([
+  "API","KEY","AUTH","TOKEN","SECRET",
+  "INFO","INFORMATION","DATA","LOOKUP","CHECK","LIST","PROVIDE",
+  "CURRENT","LATEST","REGIONAL","COUNTRY","PERIOD","GENERAL","TERM"
+]);
+const ACTION_TOKENS=new Set([
+  "UPDATE","DELETE","CREATE","REGISTER","ISSUE","DOWNLOAD","UPLOAD",
+  "CONVERT","CALCULATE","GENERATE","APPLICATION","COMPARE","ANALYSIS",
+  "MONITORING","NOTIFICATION"
+]);
+
+function keyTokenCount(key){
+  return String(key||"").split("_").filter(Boolean).length;
+}
+
+function suffixTokenCount(suffix){
+  return String(suffix||"").split("_").filter(Boolean).length;
+}
+
+function normalizeMeaningToken(token){
+  const t=String(token||"").toUpperCase();
+  if(t==="ADJUSTMENT" || t==="CHANGE" || t==="MODIFY") return "UPDATE";
+  return t;
+}
+
+function cleanedMeaningTokens(tokens){
+  const out=[];
+  for(const raw of tokens){
+    const t=normalizeMeaningToken(raw);
+    if(!t || LOW_VALUE_TOKENS.has(t)) continue;
+    if(!out.includes(t)) out.push(t);
+  }
+  return out;
+}
+
+function compactMeaningTokens(tokens,maxCount){
+  const clean=cleanedMeaningTokens(tokens);
+  if(clean.length<=maxCount) return clean;
+  if(maxCount<=0) return [];
+  if(maxCount===1) return [clean[0]];
+
+  const provider=clean[0];
+  const rest=clean.slice(1);
+  const action=[...rest].reverse().find(t=>ACTION_TOKENS.has(t));
+
+  // 구분 동작이 있으면 반드시 살립니다.
+  // 예: MOFA + TRAVEL + ALERT + UPDATE -> MOFA + ALERT + UPDATE
+  if(action){
+    if(maxCount===2) return [provider,action];
+    const core=rest.filter(t=>t!==action && !ACTION_TOKENS.has(t));
+    const chosenCore=core.length ? core[core.length-1] : null;
+    const result=[provider];
+    if(chosenCore) result.push(chosenCore);
+    result.push(action);
+    return result.slice(0,maxCount);
+  }
+
+  // 동작 구분이 없으면 기관 + 뒤쪽 핵심 서비스명을 우선합니다.
+  // 예: MOFA + OVERSEAS + TRAVEL + ALERT -> MOFA + TRAVEL + ALERT
+  const core=rest.filter(t=>!ACTION_TOKENS.has(t));
+  return [provider,...core.slice(-(maxCount-1))].slice(0,maxCount);
+}
+
+function keySuffixForLabel(original){
+  const upper=String(original||"").toUpperCase();
+  if(/JAVASCRIPT|자바스크립트/.test(upper)) return "_KEY";
+  if(/NATIVE\s*APP|네이티브\s*앱/.test(upper)) return "_KEY";
+  if(/ADMIN\s*KEY|관리자\s*키/.test(upper)) return "_KEY";
+  if(/SECRET|시크릿|비밀/.test(upper)) return "_SECRET_KEY";
+  if(/TOKEN|토큰/.test(upper)) return "_ACCESS_TOKEN";
+  if(/\bID\b|아이디|고객\s*(ID|번호)/i.test(original)) return "_ID";
+  if(/SERVICE\s*KEY|서비스\s*키|인증키/i.test(original)) return "_SERVICE_KEY";
+  return "_API_KEY";
+}
+
+function autoKeyName(label){
+  const original=String(label||"").trim();
+  const suffix=keySuffixForLabel(original);
+  const maxBody=Math.max(1,MAX_KEY_TOKENS-suffixTokenCount(suffix));
+  let body=compactMeaningTokens(semanticMatches(original),maxBody);
+  if(!body.length) body=["CUSTOM"];
+
+  return (body.join("_")+suffix)
+    .replace(/_+/g,"_")
+    .replace(/_API_API_KEY$/,"_API_KEY")
+    .replace(/_KEY_KEY$/,"_KEY")
+    .replace(/_ACCESS_ACCESS_TOKEN$/,"_ACCESS_TOKEN")
+    .replace(/^_+|_+$/g,"") || "CUSTOM_API_KEY";
+}
+
+function showNotice(message){
+  let el=document.getElementById("appNotice");
+  if(!el){
+    el=document.createElement("div");
+    el.id="appNotice";
+    el.style.cssText="position:fixed;left:50%;bottom:28px;transform:translateX(-50%);z-index:10050;background:#101828;color:#fff;padding:10px 14px;border-radius:10px;font-size:12px;box-shadow:0 8px 30px rgba(16,24,40,.22);opacity:0;transition:.18s;pointer-events:none";
+    document.body.appendChild(el);
+  }
+  el.textContent=message;
+  el.style.opacity="1";
+  clearTimeout(showNotice._t);
+  showNotice._t=setTimeout(()=>{el.style.opacity="0";},1800);
+}
+
+function normalizedLabel(label){
+  return cleanLabel(String(label||"")).replace(/\s+/g," ").trim().toLowerCase();
+}
+
+function credentialSuffixParts(key){
+  const suffixes=["_SECRET_KEY","_SERVICE_KEY","_ACCESS_TOKEN","_API_KEY","_CLIENT_ID","_CUSTOMER_ID","_LOGIN_CUSTOMER_ID","_DEVELOPER_TOKEN","_REFRESH_TOKEN","_KEY","_ID"];
+  const upper=String(key||"").toUpperCase();
+  const suffix=suffixes.find(s=>upper.endsWith(s)) || "";
+  return suffix ? {body:upper.slice(0,-suffix.length),suffix} : {body:upper,suffix:""};
+}
+
+function sameGroupRows(label){
+  const groupKey=groupCompareKey(inferGroupName(label));
+  return rows.filter(r=>groupCompareKey(inferGroupName(r.label)||r.group)===groupKey);
+}
+
+function chooseFamilyBase(label){
+  const family=sameGroupRows(label);
+  if(!family.length) return null;
+
+  // 완전히 같은 한글 이름이면 같은 KEY_NAME을 재사용합니다.
+  const exact=family.find(r=>normalizedLabel(r.label)===normalizedLabel(label));
+  if(exact) return {row:exact,key:exact.key,exact:true};
+
+  // 입력 순서에 따라 이름이 바뀌지 않도록 "자동" 생성 항목은 기준키로 삼지 않습니다.
+  // 사용자가 직접 불러온/지정한 기존 KEY_NAME만 family base로 사용합니다.
+  const candidates=family
+    .filter(r=>r.kind==="existing")
+    .sort((a,b)=>keyTokenCount(a.key)-keyTokenCount(b.key) || String(a.key).length-String(b.key).length);
+
+  const row=candidates[0];
+  return row ? {row,key:row.key,exact:false} : null;
+}
+
+function descriptorTokensForLabel(label,baseKey,maxPrefix){
+  if(maxPrefix<=0) return [];
+
+  const providerTokens=new Set(cleanedMeaningTokens(semanticMatches(inferGroupName(label))));
+  const baseParts=credentialSuffixParts(baseKey);
+  const baseTokens=new Set(baseParts.body.split("_").filter(Boolean));
+
+  const raw=cleanedMeaningTokens(semanticMatches(label))
+    .filter(t=>!providerTokens.has(t))
+    .filter(t=>!baseTokens.has(t));
+
+  // UPDATE 같은 구분 동작은 우선적으로 살립니다.
+  const actions=raw.filter(t=>ACTION_TOKENS.has(t));
+  const cores=raw.filter(t=>!ACTION_TOKENS.has(t));
+  const ordered=[...cores,...actions];
+  const out=[];
+  for(const t of ordered){
+    if(!out.includes(t)) out.push(t);
+    if(out.length>=maxPrefix) break;
+  }
+  return out;
+}
+
+function deriveFromFamilyBase(baseKey,label){
+  const parts=credentialSuffixParts(baseKey);
+  const baseTokens=parts.body.split("_").filter(Boolean);
+  const suffixTokens=suffixTokenCount(parts.suffix);
+  const maxPrefix=Math.max(0,MAX_KEY_TOKENS-baseTokens.length-suffixTokens);
+  const prefixes=descriptorTokensForLabel(label,baseKey,maxPrefix);
+  if(!prefixes.length) return baseKey;
+
+  return `${prefixes.join("_")}_${parts.body}${parts.suffix}`
+    .replace(/_+/g,"_")
+    .replace(/^_+|_+$/g,"");
+}
+
+function recommendAlternativeKey(existingLabel,newLabel,baseKey){
+  const auto=autoKeyName(newLabel);
+  if(auto!==baseKey && keyTokenCount(auto)<=MAX_KEY_TOKENS && !rows.some(r=>r.key===auto)) return auto;
+
+  const oldTokens=new Set(cleanedMeaningTokens(semanticMatches(existingLabel)));
+  const diff=cleanedMeaningTokens(semanticMatches(newLabel)).filter(t=>!oldTokens.has(t));
+  const action=[...diff].reverse().find(t=>ACTION_TOKENS.has(t));
+  if(action){
+    const parts=credentialSuffixParts(baseKey);
+    const provider=(parts.body.split("_").filter(Boolean)[0]||"CUSTOM");
+    const candidate=`${provider}_${action}${parts.suffix}`.replace(/_+/g,"_");
+    if(keyTokenCount(candidate)<=MAX_KEY_TOKENS && !rows.some(r=>r.key===candidate)) return candidate;
+  }
+  return "";
+}
+
+function semanticAlternativeKey(base,label,excludeIndex=-1,existingLabel=""){
+  const used=new Set(rows.map((r,i)=>i===excludeIndex ? "" : r.key));
+  if(!used.has(base)) return base;
+
+  const recommended=recommendAlternativeKey(existingLabel,label,base);
+  if(recommended && !used.has(recommended)) return recommended;
+
+  const room=Math.max(0,MAX_KEY_TOKENS-keyTokenCount(base));
+  const extras=descriptorTokensForLabel(label,base,room);
+  for(let take=1; take<=extras.length; take++){
+    const candidate=`${extras.slice(0,take).join("_")}_${base}`.replace(/_+/g,"_");
+    if(keyTokenCount(candidate)<=MAX_KEY_TOKENS && !used.has(candidate)) return candidate;
+  }
+
+  const raw=window.prompt(
+    `같은 KEY_NAME이 이미 있습니다.\n\n${base}\n\n최대 5토큰 안에서 사용할 짧은 KEY_NAME을 입력하세요.`,
+    recommended || base
+  );
+  if(raw){
+    const candidate=String(raw).toUpperCase()
+      .replace(/[^A-Z0-9_]/g,"_")
+      .replace(/_+/g,"_")
+      .replace(/^_+|_+$/g,"");
+    if(candidate && keyTokenCount(candidate)<=MAX_KEY_TOKENS && !used.has(candidate)) return candidate;
+  }
+  return base;
+}
+
+function autoKeyForNewLabel(label){
+  const family=chooseFamilyBase(label);
+
+  if(family){
+    if(family.exact) return {key:family.key,changed:false,base:family.key};
+
+    const derived=deriveFromFamilyBase(family.key,label);
+    if(derived!==family.key && !rows.some(r=>r.key===derived)){
+      return {key:derived,changed:true,base:family.key};
+    }
+  }
+
+  // 자동 항목은 한글 이름 자체만 보고 결정하므로 입력 순서에 영향을 받지 않습니다.
+  const base=autoKeyName(label);
+  const sameKeyRows=rows.filter(r=>r.key===base);
+  if(!sameKeyRows.length) return {key:base,changed:false};
+
+  const sameLabel=sameKeyRows.some(r=>normalizedLabel(r.label)===normalizedLabel(label));
+  if(sameLabel) return {key:base,changed:false};
+
+  const key=semanticAlternativeKey(base,label,-1,sameKeyRows[0] && sameKeyRows[0].label);
+  return {key,changed:key!==base,base};
+}
+
+function duplicateIndex(key){
+  return rows.findIndex(r=>r.key===key);
+}
+
+function resolveDuplicate(existingRow,incomingRow){
+  return new Promise(resolve=>{
+    const modal=document.getElementById("dupModal");
+    const suggested=recommendAlternativeKey(existingRow.label,incomingRow.label,incomingRow.key);
+    document.getElementById("dupKey").textContent=incomingRow.key;
+    document.getElementById("dupOld").innerHTML=
+      `<b>${esc(existingRow.label)}</b><br>${existingRow.value ? esc(mask(existingRow.value)) : '<span class="value-empty">미입력</span>'}`;
+    document.getElementById("dupNew").innerHTML=
+      `<b>${esc(incomingRow.label)}</b><br>${incomingRow.value ? esc(mask(incomingRow.value)) : '<span class="value-empty">미입력</span>'}`;
+
+    const suggestBox=document.getElementById("dupSuggestBox");
+    const suggestText=document.getElementById("dupSuggested");
+    const addBtn=document.getElementById("dupAdd");
+    if(suggested){
+      suggestBox.style.display="block";
+      suggestText.textContent=suggested;
+      addBtn.textContent="추천 이름으로 추가";
+      addBtn.disabled=false;
+    }else{
+      suggestBox.style.display="none";
+      suggestText.textContent="";
+      addBtn.textContent="다른 이름으로 추가";
+      addBtn.disabled=false;
+    }
+
+    modal.classList.add("open");
+    const done=(choice)=>{
+      modal.classList.remove("open");
+      document.getElementById("dupKeep").onclick=null;
+      document.getElementById("dupOverwrite").onclick=null;
+      document.getElementById("dupAdd").onclick=null;
+      resolve({choice,suggested});
+    };
+    document.getElementById("dupKeep").onclick=()=>done("keep");
+    document.getElementById("dupOverwrite").onclick=()=>done("overwrite");
+    document.getElementById("dupAdd").onclick=()=>done("add");
+  });
+}
+async function addOrResolve(incomingRow){
+  const idx=duplicateIndex(incomingRow.key);
+
+  // 1) 같은 KEY_NAME 자체가 없으면 바로 추가
+  if(idx<0){
+    rows.push(incomingRow);
+    return {status:"added", message:"새 항목을 추가했습니다."};
+  }
+
+  const existing=rows[idx];
+  const oldValue=String(existing.value||"");
+  const newValue=String(incomingRow.value||"");
+
+  // 2) 기존 항목은 있는데 인증키가 비어 있고 새 값이 있으면 자동으로 채움
+  if(!oldValue && newValue){
+    rows[idx]={
+      ...existing,
+      label: incomingRow.label || existing.label,
+      value: newValue,
+      kind: incomingRow.kind || existing.kind,
+      group: incomingRow.group || existing.group
+    };
+    return {status:"filled", message:"기존 항목이 비어 있어 인증키를 바로 채웠습니다."};
+  }
+
+  // 3) KEY_NAME과 인증키 값까지 같으면 추가하지 않음
+  if(oldValue && newValue && oldValue===newValue){
+    return {status:"same", message:"이미 같은 KEY_NAME과 인증키가 등록되어 있습니다."};
+  }
+
+  // 4) 둘 다 값이 비어 있으면 중복 생성하지 않고 기존 유지
+  if(!oldValue && !newValue){
+    return {status:"empty-same", message:"같은 KEY_NAME이 이미 있고 두 항목 모두 인증키가 비어 있습니다."};
+  }
+
+  // 5) 같은 KEY_NAME인데 실제 값이 다를 때만 사용자 선택
+  const decision=await resolveDuplicate(existing,incomingRow);
+  const choice=decision.choice;
+
+  if(choice==="overwrite"){
+    rows[idx]={
+      ...existing,
+      ...incomingRow,
+      key:existing.key,
+      group:incomingRow.group || existing.group
+    };
+    return {status:"overwritten", message:"새 값으로 덮어썼습니다."};
+  }
+
+  if(choice==="add"){
+    incomingRow.key=decision.suggested || uniqueKey(incomingRow.key,-1,incomingRow.label,existing.label);
+    if(incomingRow.key===existing.key){
+      return {status:"kept", message:"추천 가능한 다른 KEY_NAME이 없어 기존 항목을 유지했습니다."};
+    }
+    rows.push(incomingRow);
+    return {status:"added-duplicate", message:`추천 KEY_NAME ${incomingRow.key}로 추가했습니다.`};
+  }
+
+  return {status:"kept", message:"기존 값을 유지했습니다."};
+}
+
+function uniqueKey(base, excludeIndex=-1, label="", existingLabel=""){
+  return semanticAlternativeKey(base,label,excludeIndex,existingLabel);
+}
+
+async function addFiles(fileList){
+  const files=[...fileList].filter(f=>/\.txt$/i.test(f.name) || !f.type || f.type==="text/plain");
+  if(!files.length) return;
+
+  for(const file of files){
+    try{
+      const text=await file.text();
+      const fileLabel=cleanLabel(file.name);
+      const parsedEntries=parseTxt(text,fileLabel);
+
+      for(const p of parsedEntries){
+        const fullLabel = String(p.label||fileLabel).trim() || fileLabel;
+
+        let key=p.key;
+        let autoRenamed=false;
+
+        if(!key){
+          const autoResult=autoKeyForNewLabel(fullLabel);
+          key=autoResult.key;
+          autoRenamed=autoResult.changed;
+        }
+
+        const result=await addOrResolve({
+          label: fullLabel,
+          key,
+          value:p.value,
+          kind:p.existing ? "existing" : "auto",
+          group: inferGroupName(fullLabel)
+        });
+
+        if(autoRenamed){
+          showNotice(`자동 KEY_NAME 충돌을 피해서 ${key}로 등록했습니다.`);
+        }else if(result && result.status==="same"){
+          showNotice(result.message);
+        }
+      }
+    }catch(e){
+      console.error("TXT 처리 실패:", file && file.name, e);
+      alert(`${file && file.name ? file.name : "TXT 파일"} 처리 중 오류가 발생했습니다.`);
+    }
+  }
+  render();
+  saveHistory();
+}
+
+function sameCredentialCount(value){
+  const v=String(value||"");
+  if(!v) return 0;
+  return rows.filter(r=>String(r.value||"")===v).length;
+}
+
+
+function usageForKey(key){
+  const exact=KEY_USAGE[String(key||"")];
+  if(exact) return exact;
+  const base=String(key||"").replace(/_\d+$/,"");
+  return KEY_USAGE[base] || null;
+}
+
+function usageHtml(key){
+  const u=usageForKey(key);
+  if(!u){
+    return '<div class="usage-cell"><span class="usage-unused">현재 7개 프로젝트에서 사용처 미분석</span></div>';
+  }
+
+  const projectHtml=(u.projects||[]).length
+    ? `<div class="usage-projects">${u.projects.map(p=>`<span class="usage-project">${esc(p)}</span>`).join("")}</div>`
+    : '';
+
+  const purposeClass=(u.projects||[]).length ? "usage-purpose" : "usage-purpose usage-unused";
+
+  return `<div class="usage-cell">
+    ${projectHtml}
+    <div class="${purposeClass}">${esc(u.purpose||"")}</div>
+    ${u.relation ? `<div class="usage-relation">${esc(u.relation)}</div>` : ""}
+  </div>`;
+}
+
+function setActiveGridCell(target){
+  const td=target && target.closest ? target.closest("td") : null;
+  if(!td) return;
+  const table=td.closest(".group-table");
+  if(!table) return;
+  table.querySelectorAll("tr.row-selected").forEach(el=>el.classList.remove("row-selected"));
+  table.querySelectorAll("td.cell-selected").forEach(el=>el.classList.remove("cell-selected"));
+  const tr=td.closest("tr");
+  if(tr) tr.classList.add("row-selected");
+  td.classList.add("cell-selected");
+}
+
+function render(){
+  const box=document.getElementById("groups");
+  box.innerHTML="";
+
+  if(!rows.length){
+    box.innerHTML='<div class="empty-groups">TXT 파일을 넣으면 대표 이름별로 자동 그룹화됩니다.</div>';
+    document.getElementById("stats").textContent="0개";
+    const meta=document.getElementById("searchMeta");
+    if(meta) meta.textContent="전체 0개";
+    updateOutputs();
+    return;
+  }
+
+  const grouped=groupRows(listSearchQuery);
+
+  if(!grouped.size){
+    box.innerHTML=`<div class="search-empty">“${esc(listSearchQuery)}” 검색 결과가 없습니다.</div>`;
+    const meta=document.getElementById("searchMeta");
+    if(meta) meta.innerHTML=`<strong>0</strong> / ${rows.length}개`;
+    document.getElementById("stats").textContent=`0 / ${rows.length}개`;
+    updateOutputs();
+    return;
+  }
+
+  for(const [groupName,items] of grouped.entries()){
+    const card=document.createElement("section");
+    card.className="group-card";
+
+    const head=document.createElement("button");
+    head.className="group-head";
+    head.type="button";
+    head.innerHTML=`
+      <span class="group-chevron">▼</span>
+      <span class="group-name">${esc(groupName)}</span>
+      <span class="group-count">${items.length}개</span>`;
+
+    const body=document.createElement("div");
+    body.className="group-body";
+    body.innerHTML=`
+      <div style="overflow:auto">
+        <table class="group-table">
+          <thead>
+            <tr>
+              <th>한글 이름</th>
+              <th>KEY_NAME</th>
+              <th>인증키</th>
+              <th>구분</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>`;
+
+    const tb=body.querySelector("tbody");
+
+    items.forEach(({row:r,index:i})=>{
+      const tr=document.createElement("tr");
+      tr.innerHTML=`
+        <td data-label="한글 이름"><input class="labeledit" data-li="${i}" value="${esc(r.label)}" spellcheck="false"></td>
+        <td data-label="KEY_NAME"><input class="envedit" data-i="${i}" value="${esc(r.key)}" spellcheck="false"></td>
+        <td data-label="인증키">
+          <div class="secret-wrap">
+            <input class="secretedit" data-si="${i}" type="password" value="${esc(r.value||"")}" placeholder="인증키 입력" autocomplete="off" spellcheck="false">
+            <button class="secret-toggle" type="button" data-show="${i}" title="인증키 보기/숨기기">👁</button>
+          </div>
+          ${r.value && sameCredentialCount(r.value)>1 ? `<span class="shared-badge">공용키 · ${sameCredentialCount(r.value)}개 이름에서 사용</span>` : ""}
+        </td>
+        <td data-label="구분"><span class="tag ${r.kind==="existing"?"old":"auto"}">${r.kind==="existing"?"직접":"자동"}</span></td>
+        <td data-label="삭제"><button class="iconbtn" data-del="${i}" title="삭제">×</button></td>`;
+      tb.appendChild(tr);
+    });
+
+    head.addEventListener("click",()=>card.classList.toggle("closed"));
+
+    card.appendChild(head);
+    card.appendChild(body);
+    box.appendChild(card);
+  }
+
+
+  box.querySelectorAll(".group-table td").forEach(td=>{
+    td.addEventListener("mousedown",e=>setActiveGridCell(e.target));
+  });
+  box.querySelectorAll(".group-table input, .group-table button").forEach(control=>{
+    control.addEventListener("focus",e=>setActiveGridCell(e.currentTarget));
+  });
+
+  box.querySelectorAll(".secretedit").forEach(input=>{
+    input.addEventListener("focus",e=>{
+      const i=+e.currentTarget.dataset.si;
+      e.currentTarget.dataset.before=rows[i].value||"";
+    });
+    input.addEventListener("input",e=>{
+      const i=+e.currentTarget.dataset.si;
+      rows[i].value=e.currentTarget.value;
+      updateOutputs();
+    });
+    input.addEventListener("blur",e=>{
+      const i=+e.currentTarget.dataset.si;
+      const v=e.currentTarget.value;
+      rows[i].value=v;
+      if((e.currentTarget.dataset.before||"")!==v) saveHistory();
+      updateOutputs();
+    });
+    input.addEventListener("keydown",e=>{
+      if(e.key==="Enter"){
+        e.preventDefault();
+        e.currentTarget.blur();
+      }
+    });
+  });
+
+  box.querySelectorAll("[data-show]").forEach(btn=>{
+    btn.addEventListener("click",e=>{
+      e.stopPropagation();
+      const i=+e.currentTarget.dataset.show;
+      const input=box.querySelector(`.secretedit[data-si="${i}"]`);
+      if(!input) return;
+      const showing=input.type==="text";
+      input.type=showing ? "password" : "text";
+      e.currentTarget.textContent=showing ? "👁" : "🙈";
+      e.currentTarget.title=showing ? "인증키 보기" : "인증키 숨기기";
+    });
+  });
+
+  box.querySelectorAll(".labeledit").forEach(input=>{
+    input.addEventListener("focus",e=>{
+      const i=+e.currentTarget.dataset.li;
+      e.currentTarget.dataset.before=rows[i].label;
+    });
+    input.addEventListener("input",e=>{
+      const i=+e.currentTarget.dataset.li;
+      rows[i].label=e.currentTarget.value;
+      updateOutputs();
+    });
+    input.addEventListener("blur",e=>{
+      const i=+e.currentTarget.dataset.li;
+      let v=e.currentTarget.value.trim();
+      if(!v) v=rows[i].key || "이름 없음";
+      rows[i].label=v;
+      e.currentTarget.value=v;
+      if(e.currentTarget.dataset.before!==v) saveHistory();
+      updateOutputs();
+    });
+    input.addEventListener("keydown",e=>{
+      if(e.key==="Enter"){
+        e.preventDefault();
+        e.currentTarget.blur();
+      }
+    });
+  });
+
+  box.querySelectorAll(".envedit").forEach(input=>{
+    input.addEventListener("focus",e=>e.currentTarget.dataset.before=rows[+e.currentTarget.dataset.i].key);
+    input.addEventListener("input",e=>{
+      const i=+e.currentTarget.dataset.i;
+      rows[i].key=e.currentTarget.value.toUpperCase().replace(/[^A-Z0-9_]/g,"_").replace(/_+/g,"_");
+      updateOutputs();
+    });
+    input.addEventListener("blur",e=>{
+      const i=+e.currentTarget.dataset.i;
+      rows[i].key=uniqueKey(rows[i].key||"CUSTOM_API_KEY",i,rows[i].label);
+      e.currentTarget.value=rows[i].key;
+      if(e.currentTarget.dataset.before!==rows[i].key) saveHistory();
+      updateOutputs();
+    });
+  });
+
+  box.querySelectorAll("[data-del]").forEach(btn=>{
+    btn.addEventListener("click",e=>{
+      e.stopPropagation();
+      rows.splice(+e.currentTarget.dataset.del,1);
+      render();
+      saveHistory();
+    });
+  });
+
+  const visibleCount=[...grouped.values()].reduce((sum,items)=>sum+items.length,0);
+  const searching=!!normalizeSearchText(listSearchQuery);
+  document.getElementById("stats").textContent=searching
+    ? `${visibleCount} / ${rows.length}개 · ${grouped.size}그룹`
+    : `${rows.length}개 · ${grouped.size}그룹`;
+  const meta=document.getElementById("searchMeta");
+  if(meta) meta.innerHTML=searching
+    ? `<strong>${visibleCount}</strong> / ${rows.length}개`
+    : `전체 ${rows.length}개`;
+  updateOutputs();
+}
+
+let envActualVisible=false;
+
+function maskedEnvValue(value){
+  const v=String(value||"");
+  if(!v) return "";
+  return "••••••••";
+}
+
+function actualEnvText(){
+  return buildEnvText(rows);
+}
+
+function refreshEnvVisibilityButton(){
+  const btn=document.getElementById("toggleEnvSecret");
+  const out=document.getElementById("envOut");
+  if(btn) btn.textContent=envActualVisible ? "실제값 숨기기" : "실제값 보기";
+  if(out) out.classList.toggle("env-revealed",envActualVisible);
+}
+
+function updateOutputs(){
+  document.getElementById("envOut").value=rows.map(r=>
+    `${r.key}=${envActualVisible ? (r.value||"") : maskedEnvValue(r.value)}`
+  ).join("\n");
+  refreshEnvVisibilityButton();
+  const grouped=groupRows("");
+  const parts=[];
+  for(const [groupName,items] of grouped.entries()){
+    parts.push(`[${groupName}]`);
+    items.forEach(({row:r})=>parts.push(`${r.label} — ${r.key}`));
+    parts.push("");
+  }
+  document.getElementById("listOut").value=parts.join("\n").trim();
+}
+
+
+
+function performHardReset(){
+  envActualVisible=false;
+  listSearchQuery="";
+  const searchInput=document.getElementById("listSearch");
+  if(searchInput) searchInput.value="";
+  try{
+    localStorage.removeItem(STORAGE_KEY);
+    for(const oldKey of PREVIOUS_STORAGE_KEYS){ localStorage.removeItem(oldKey); }
+  }catch(e){}
+
+  rows=clone(DEFAULT_ROWS);
+  history=[clone(rows)];
+  hIndex=0;
+  render();
+  updateHistoryButtons();
+
+  alert("로컬 저장 데이터를 완전히 삭제했습니다. 화면은 빈 목록으로 돌아왔습니다.");
+}
+
+function openResetModal(){
+  document.getElementById("resetModal").classList.add("open");
+}
+
+function closeResetModal(){
+  document.getElementById("resetModal").classList.remove("open");
+}
+
+
+function buildKeysOnlyText(sourceRows=rows){
+  const originalRows=rows;
+  rows=sourceRows;
+  try{
+    const grouped=groupRows();
+    const lines=[];
+    for(const [groupName,items] of grouped.entries()){
+      lines.push(`[${groupName}]`);
+      items.forEach(({row:r})=>lines.push(`${r.label} — ${r.key}`));
+      lines.push("");
+    }
+    return lines.join("\n").trim()+"\n";
+  }finally{
+    rows=originalRows;
+  }
+}
+
+function buildStatePayload(sourceRows=rows){
+  return {
+    app:"HealingMart API Key Name Studio",
+    version:36,
+    exportedAt:new Date().toISOString(),
+    rows:clone(sourceRows)
+  };
+}
+
+function normalizeImportedRows(data){
+  const incoming=Array.isArray(data) ? data : data && data.rows;
+  if(!Array.isArray(incoming)) throw new Error("rows 없음");
+
+  const cleaned=incoming
+    .filter(x=>x && x.key)
+    .map(x=>({
+      label:String(x.label||x.key),
+      key:String(x.key).toUpperCase()
+        .replace(/[^A-Z0-9_]/g,"_")
+        .replace(/_+/g,"_"),
+      value:String(x.value ?? ""),
+      kind:x.kind==="existing" ? "existing" : "auto",
+      group:String(x.group||inferGroupName(x.label||x.key))
+    }));
+
+  if(!cleaned.length) throw new Error("가져올 항목 없음");
+  return cleaned;
+}
+
+function buildEnvText(sourceRows=rows){
+  return sourceRows.map(r=>`${r.key}=${r.value||""}`).join("\n");
+}
+
+function exportKeysOnly(){
+  const text=buildKeysOnlyText(rows);
+  const blob=new Blob([text],{type:"text/plain;charset=utf-8"});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a");
+  const stamp=new Date().toISOString().replace(/[:.]/g,"-");
+  a.href=url;
+  a.download=`HealingMart-API-KEY-NAMES-${stamp}.txt`;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+
+function exportState(){
+  const payload=buildStatePayload(rows);
+  const blob=new Blob([JSON.stringify(payload,null,2)],{type:"application/json;charset=utf-8"});
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(blob);
+  const d=new Date();
+  const stamp=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+  a.download=`HealingMart-API-KEY-Backup-${stamp}.json`;
+  a.click();
+  setTimeout(()=>URL.revokeObjectURL(a.href),700);
+}
+
+async function importStateFile(file){
+  if(!file) return;
+  try{
+    const text=await file.text();
+    const data=JSON.parse(text);
+    const cleaned=normalizeImportedRows(data);
+
+    if(!rows.length){
+      rows=cleaned;
+    }else{
+      for(const r of cleaned){
+        await addOrResolve(r);
+      }
+      showNotice("가져오기가 완료되었습니다.");
+    }
+
+    render();
+    saveHistory();
+  }catch(e){
+    console.error(e);
+    alert("올바른 HealingMart 백업 JSON 파일이 아닙니다.");
+  }
+}
+
+const TOOL_SOURCE_HTML = "<!doctype html>\n" + document.documentElement.outerHTML;
+
+function downloadToolHtml(){
+  const blob=new Blob([TOOL_SOURCE_HTML],{type:"text/html;charset=utf-8"});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a");
+  a.href=url;
+  a.download="HealingMart-API-Key-Name-Studio-v36-PUBLIC-SEARCH.html";
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+
+async function copyText(text){
+  if(!text) return;
+  try{ await navigator.clipboard.writeText(text); }
+  catch{
+    const t=document.createElement("textarea");
+    t.value=text;document.body.appendChild(t);t.select();document.execCommand("copy");t.remove();
+  }
+}
+
+const files=document.getElementById("files");
+files.addEventListener("change",e=>{
+  addFiles(e.target.files);
+  e.target.value="";
+});
+
+const drop=document.getElementById("drop");
+["dragenter","dragover"].forEach(ev=>drop.addEventListener(ev,e=>{
+  e.preventDefault();e.stopPropagation();drop.classList.add("drag");
+}));
+["dragleave","drop"].forEach(ev=>drop.addEventListener(ev,e=>{
+  e.preventDefault();e.stopPropagation();drop.classList.remove("drag");
+}));
+drop.addEventListener("drop",e=>addFiles(e.dataTransfer.files));
+
+document.getElementById("manualToggle").addEventListener("click",()=>{
+  document.getElementById("manual").classList.toggle("open");
+});
+
+const listSearch=document.getElementById("listSearch");
+const searchClear=document.getElementById("searchClear");
+
+function clearListSearch(){
+  listSearchQuery="";
+  if(listSearch) listSearch.value="";
+  render();
+}
+
+if(listSearch){
+  listSearch.addEventListener("input",e=>{
+    listSearchQuery=e.currentTarget.value;
+    render();
+  });
+  listSearch.addEventListener("keydown",e=>{
+    if(e.key==="Escape" && listSearch.value){
+      e.preventDefault();
+      clearListSearch();
+      listSearch.focus();
+    }
+  });
+}
+if(searchClear) searchClear.addEventListener("click",()=>{
+  clearListSearch();
+  if(listSearch) listSearch.focus();
+});
+
+document.getElementById("manualAdd").addEventListener("click",async()=>{
+  const label=document.getElementById("mLabel").value.trim();
+  const value=document.getElementById("mValue").value.trim();
+  let key=document.getElementById("mKey").value.trim().toUpperCase().replace(/[^A-Z0-9_]/g,"_").replace(/_+/g,"_");
+
+  if(!label){
+    alert("한글 이름을 입력해주세요.");
+    return;
+  }
+  const manualKeyEntered=!!document.getElementById("mKey").value.trim();
+  let autoRenamed=false;
+
+  if(!key){
+    const autoResult=autoKeyForNewLabel(label);
+    key=autoResult.key;
+    autoRenamed=autoResult.changed;
+  }
+
+  const result=await addOrResolve({
+    label,key,value,
+    kind:manualKeyEntered ? "existing" : "auto",
+    group: inferGroupName(label)
+  });
+
+  if(autoRenamed){
+    showNotice(`자동 KEY_NAME이 기존 항목과 겹쳐 ${key}로 새로 등록했습니다.`);
+  }else if(result && result.message){
+    showNotice(result.message);
+  }
+  ["mLabel","mKey","mValue"].forEach(id=>document.getElementById(id).value="");
+  render();saveHistory();
+});
+
+
+
+document.getElementById("expandAll").addEventListener("click",()=>{
+  document.querySelectorAll(".group-card").forEach(x=>x.classList.remove("closed"));
+});
+document.getElementById("collapseAll").addEventListener("click",()=>{
+  document.querySelectorAll(".group-card").forEach(x=>x.classList.add("closed"));
+});
+
+document.getElementById("exportKeysOnly").addEventListener("click",exportKeysOnly);
+document.getElementById("exportState").addEventListener("click",exportState);
+document.getElementById("downloadTool").addEventListener("click",downloadToolHtml);
+document.getElementById("importState").addEventListener("change",e=>{
+  importStateFile(e.target.files[0]);
+  e.target.value="";
+});
+
+document.getElementById("undo").addEventListener("click",()=>{ if(hIndex>0) restoreHistory(hIndex-1); });
+document.getElementById("redo").addEventListener("click",()=>{ if(hIndex<history.length-1) restoreHistory(hIndex+1); });
+
+
+document.getElementById("hardReset").addEventListener("click",openResetModal);
+document.getElementById("resetCancel").addEventListener("click",closeResetModal);
+
+document.getElementById("resetConfirm").addEventListener("click",()=>{
+  closeResetModal();
+  const ok=confirm("정말로 브라우저에 저장된 API 목록과 인증키를 모두 삭제할까요?\n\n되돌릴 수 없습니다.");
+  if(ok) performHardReset();
+});
+
+document.getElementById("resetExport").addEventListener("click",()=>{
+  exportState();
+  closeResetModal();
+  const ok=confirm("백업 파일을 저장했습니다.\n이제 로컬 데이터를 완전히 초기화할까요?");
+  if(ok) performHardReset();
+});
+
+document.getElementById("resetModal").addEventListener("click",e=>{
+  if(e.target.id==="resetModal") closeResetModal();
+});
+
+
+document.getElementById("resetDefault").addEventListener("click",()=>{
+  if(confirm("현재 내용을 지우고 새 목록으로 시작할까요?")){
+    envActualVisible=false;
+    listSearchQuery="";
+    if(listSearch) listSearch.value="";
+    rows=clone(DEFAULT_ROWS);
+    render();
+    saveHistory();
+  }
+});
+
+document.getElementById("clear").addEventListener("click",()=>{
+  envActualVisible=false;
+  listSearchQuery="";
+  if(listSearch) listSearch.value="";
+  rows=[];render();saveHistory();
+});
+document.getElementById("toggleEnvSecret").addEventListener("click",()=>{
+  envActualVisible=!envActualVisible;
+  updateOutputs();
+  if(envActualVisible){
+    showNotice("실제 인증값이 현재 화면에 표시됩니다. 주변에 다른 사람이 없는지 확인하세요.");
+  }else{
+    showNotice("실제 인증값을 다시 숨겼습니다.");
+  }
+});
+
+document.getElementById("copyEnv").addEventListener("click",async()=>{
+  const hasActual=rows.some(r=>String(r.value||"").length>0);
+  if(!hasActual){
+    await copyText(actualEnvText());
+    showNotice(".env 내용을 복사했습니다.");
+    return;
+  }
+  const ok=confirm("실제 API Key / Secret / Token 값이 클립보드에 복사됩니다. 계속할까요?");
+  if(!ok) return;
+  await copyText(actualEnvText());
+  showNotice("실제 인증값이 포함된 .env 내용을 클립보드에 복사했습니다.");
+});
+document.getElementById("copyList").addEventListener("click",()=>copyText(document.getElementById("listOut").value));
+document.getElementById("downloadEnv").addEventListener("click",()=>{
+  const hasActual=rows.some(r=>String(r.value||"").length>0);
+  if(hasActual){
+    const ok=confirm("실제 API Key / Secret / Token 값이 포함된 .env 파일을 저장합니다. 계속할까요?");
+    if(!ok) return;
+  }
+  const blob=new Blob([buildEnvText(rows)],{type:"text/plain;charset=utf-8"});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a");
+  a.href=url;
+  a.download=".env";
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),1000);
+  showNotice(".env 파일을 저장했습니다.");
+});
+
+if(autoload()){
+  render();
+  resetHistory();
+}else{
+  rows=clone(DEFAULT_ROWS);
+  render();
+  resetHistory();
+}
+</script>
+</body>
+</html>
