@@ -20,7 +20,7 @@ Windows Chrome, Windows Edge (headless) on authorized Windows desktop.
 - FBX ASCII v7.4 mesh: PASS (first invalid fixture failed; a correctly indented original FBX fixture was rebuilt and passed)
 - 3MF zipped model: PASS
 - DAE Collada 1.4: PASS
-- Total: 9 / 9 scenarios x 2 browser engines.
+- Total: 9 / 9 scenarios in each of two browsers (Chrome and Edge; both use the Chromium engine).
 Assertions: WebGL canvas exists, toolbar exists, rendered PNG contains model pixels not just solid background, mouse drag and zoom events, grid toggle, camera fit, and PNG capture downloads.
 - Emulated 390px mobile viewport: 3D model visible; no horizontal page overflow.
 
