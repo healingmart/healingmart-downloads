@@ -9,7 +9,7 @@
 | Reviewed upstream engine candidates | 23 | 18 permissive, 3 conditional, 2 excluded. SPDX and sources need per-version dependency review before any shipment |
 | File-extension candidates | 405 | Research targets only; multiple spellings can be a single real format |
 | Existing isolated File Studio representative 3D extension passes | 8 | GLB, GLTF, OBJ, STL, FBX, PLY, 3MF, DAE; one/few sample variants each |
-| Separate CAD proof-lab names | 4 | STEP/STP and IGES/IGS; 6 total sample fixtures across two underlying format families. Not yet integrated |
+| Separate CAD proof-lab **tested extensions** | 2 | STEP and IGES; STP/IGS aliases are candidates until independently opened. Six sample fixtures across two real families. Not yet integrated |
 | Production-approved extensions | **0** | No one is allowed to interpret candidates or prototypes as production support |
 | Generated original QA fixtures | 16 | 11 valid / 5 invalid; verified for structure and SHA-256, **no browser render evidence** |
 
