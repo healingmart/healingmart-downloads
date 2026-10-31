@@ -1,0 +1,23 @@
+{
+  "date": "2026-11-01",
+  "source": "https://www.cadprops.com/examples/",
+  "license": "CC0 1.0, CADProps original samples listed in the provider license section",
+  "files": [
+    "block.step",
+    "cylinder.step",
+    "inch-block.step",
+    "open-surface.step",
+    "assembly.step"
+  ],
+  "third_party_loader": {
+    "name": "occt-import-js",
+    "version": "0.0.23",
+    "license": "LGPL-2.1; OpenCascade license with OCCT exception",
+    "source": "https://github.com/kovacsv/occt-import-js"
+  },
+  "caveats": [
+    "Not integrated in production tools.healing-mart.com",
+    "IGES sample is not redistributed, download from origin for local verification",
+    "Only six isolated CAD sample fixtures; not exhaustive format coverage"
+  ]
+}
