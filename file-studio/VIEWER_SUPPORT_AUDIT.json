@@ -1,0 +1,254 @@
+{
+  "schema_version": "1.0.0",
+  "last_audited": "2026-11-01",
+  "environment": "isolated File Studio test Worker only; not connected to tools.healing-mart.com",
+  "evidence_url": "https://healingmart-file-studio-lab-20261101.eternityland34.workers.dev/qa/",
+  "status_definitions": {
+    "representative_pass": "Browser test passed for named fixture and interactions; full vendor/interoperability verification NOT completed",
+    "fully_verified": "Multiple independent real-world fixtures, reference fidelity, negative cases, performance and browser matrix all pass; none currently assigned",
+    "unverified": "Unimplemented or not tested; must not be publicly described as supported"
+  },
+  "current_supported_3d_extensions": 8,
+  "fully_verified_extensions": 0,
+  "representative_pass_extensions": 8,
+  "formats": [
+    {
+      "extension": "glb",
+      "kind": "3d",
+      "loader": "Three.js GLTFLoader",
+      "status": "representative_pass",
+      "tests": {
+        "real_browser_render": "pass",
+        "mouse_drag_zoom": "pass",
+        "camera_fit": "pass",
+        "grid_toggle": "pass",
+        "png_capture": "pass",
+        "source_fidelity": "not_tested",
+        "damaged_input": "not_tested",
+        "large_files": "not_tested",
+        "physical_mobile": "not_tested",
+        "firefox": "not_tested"
+      },
+      "tested_browsers": [
+        "Chrome Chromium engine, Windows",
+        "Edge Chromium engine, Windows"
+      ],
+      "fixtures": [
+        "sample.glb"
+      ],
+      "sample_coverage": "embedded binary 3D mesh"
+    },
+    {
+      "extension": "gltf",
+      "kind": "3d",
+      "loader": "Three.js GLTFLoader",
+      "status": "representative_pass",
+      "tests": {
+        "real_browser_render": "pass",
+        "mouse_drag_zoom": "pass",
+        "camera_fit": "pass",
+        "grid_toggle": "pass",
+        "png_capture": "pass",
+        "source_fidelity": "not_tested",
+        "damaged_input": "not_tested",
+        "large_files": "not_tested",
+        "physical_mobile": "not_tested",
+        "firefox": "not_tested"
+      },
+      "tested_browsers": [
+        "Chrome Chromium engine, Windows",
+        "Edge Chromium engine, Windows"
+      ],
+      "fixtures": [
+        "sample-embedded.gltf",
+        "sample.gltf + sample.gltf.bin"
+      ],
+      "sample_coverage": "embedded and external buffer"
+    },
+    {
+      "extension": "obj",
+      "kind": "3d",
+      "loader": "Three.js OBJLoader + MTLLoader",
+      "status": "representative_pass",
+      "tests": {
+        "real_browser_render": "pass",
+        "mouse_drag_zoom": "pass",
+        "camera_fit": "pass",
+        "grid_toggle": "pass",
+        "png_capture": "pass",
+        "source_fidelity": "not_tested",
+        "damaged_input": "not_tested",
+        "large_files": "not_tested",
+        "physical_mobile": "not_tested",
+        "firefox": "not_tested"
+      },
+      "tested_browsers": [
+        "Chrome Chromium engine, Windows",
+        "Edge Chromium engine, Windows"
+      ],
+      "fixtures": [
+        "sample.obj + sample.mtl + texture.png"
+      ],
+      "sample_coverage": "external MTL and PNG"
+    },
+    {
+      "extension": "stl",
+      "kind": "3d",
+      "loader": "Three.js STLLoader",
+      "status": "representative_pass",
+      "tests": {
+        "real_browser_render": "pass",
+        "mouse_drag_zoom": "pass",
+        "camera_fit": "pass",
+        "grid_toggle": "pass",
+        "png_capture": "pass",
+        "source_fidelity": "not_tested",
+        "damaged_input": "not_tested",
+        "large_files": "not_tested",
+        "physical_mobile": "not_tested",
+        "firefox": "not_tested"
+      },
+      "tested_browsers": [
+        "Chrome Chromium engine, Windows",
+        "Edge Chromium engine, Windows"
+      ],
+      "fixtures": [
+        "sample.stl"
+      ],
+      "sample_coverage": "ASCII triangle mesh"
+    },
+    {
+      "extension": "fbx",
+      "kind": "3d",
+      "loader": "Three.js FBXLoader",
+      "status": "representative_pass",
+      "tests": {
+        "real_browser_render": "pass",
+        "mouse_drag_zoom": "pass",
+        "camera_fit": "pass",
+        "grid_toggle": "pass",
+        "png_capture": "pass",
+        "source_fidelity": "not_tested",
+        "damaged_input": "not_tested",
+        "large_files": "not_tested",
+        "physical_mobile": "not_tested",
+        "firefox": "not_tested"
+      },
+      "tested_browsers": [
+        "Chrome Chromium engine, Windows",
+        "Edge Chromium engine, Windows"
+      ],
+      "fixtures": [
+        "sample.fbx"
+      ],
+      "sample_coverage": "ASCII FBX mesh; one vendor variant"
+    },
+    {
+      "extension": "ply",
+      "kind": "3d",
+      "loader": "Three.js PLYLoader",
+      "status": "representative_pass",
+      "tests": {
+        "real_browser_render": "pass",
+        "mouse_drag_zoom": "pass",
+        "camera_fit": "pass",
+        "grid_toggle": "pass",
+        "png_capture": "pass",
+        "source_fidelity": "not_tested",
+        "damaged_input": "not_tested",
+        "large_files": "not_tested",
+        "physical_mobile": "not_tested",
+        "firefox": "not_tested"
+      },
+      "tested_browsers": [
+        "Chrome Chromium engine, Windows",
+        "Edge Chromium engine, Windows"
+      ],
+      "fixtures": [
+        "sample.ply"
+      ],
+      "sample_coverage": "ASCII vertex/face mesh"
+    },
+    {
+      "extension": "3mf",
+      "kind": "3d",
+      "loader": "Three.js ThreeMFLoader",
+      "status": "representative_pass",
+      "tests": {
+        "real_browser_render": "pass",
+        "mouse_drag_zoom": "pass",
+        "camera_fit": "pass",
+        "grid_toggle": "pass",
+        "png_capture": "pass",
+        "source_fidelity": "not_tested",
+        "damaged_input": "not_tested",
+        "large_files": "not_tested",
+        "physical_mobile": "not_tested",
+        "firefox": "not_tested"
+      },
+      "tested_browsers": [
+        "Chrome Chromium engine, Windows",
+        "Edge Chromium engine, Windows"
+      ],
+      "fixtures": [
+        "sample.3mf"
+      ],
+      "sample_coverage": "minimal 3MF mesh package"
+    },
+    {
+      "extension": "dae",
+      "kind": "3d",
+      "loader": "Three.js ColladaLoader",
+      "status": "representative_pass",
+      "tests": {
+        "real_browser_render": "pass",
+        "mouse_drag_zoom": "pass",
+        "camera_fit": "pass",
+        "grid_toggle": "pass",
+        "png_capture": "pass",
+        "source_fidelity": "not_tested",
+        "damaged_input": "not_tested",
+        "large_files": "not_tested",
+        "physical_mobile": "not_tested",
+        "firefox": "not_tested"
+      },
+      "tested_browsers": [
+        "Chrome Chromium engine, Windows",
+        "Edge Chromium engine, Windows"
+      ],
+      "fixtures": [
+        "sample.dae"
+      ],
+      "sample_coverage": "basic Collada mesh"
+    }
+  ],
+  "not_currently_verified": [
+    "STEP",
+    "STP",
+    "IGES",
+    "IGS",
+    "BLEND",
+    "USD",
+    "USDZ",
+    "DWG",
+    "DXF",
+    "IFC",
+    "LAS",
+    "LAZ",
+    "KTX2",
+    "DRACO compressed GLTF",
+    "meshopt compressed GLTF",
+    "HWP",
+    "HWPX",
+    "DOCX",
+    "PPTX",
+    "XLSX",
+    "PDF"
+  ],
+  "warnings": [
+    "Some listed types above may be handled by other existing HealingMart products; this document audits only the isolated File Studio preview.",
+    "Supported means representative browser render passed. Do not infer broad compatibility.",
+    "Chrome and Edge use the same Chromium browser engine.",
+    "No numeric target of 100 or 200+ verified formats is presently substantiated."
+  ]
+}
