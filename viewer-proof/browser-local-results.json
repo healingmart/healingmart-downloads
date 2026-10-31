@@ -1,0 +1,85 @@
+{
+  "cases": [
+    {
+      "file": "block.step",
+      "rendered": true,
+      "nonBgPixels": 8592,
+      "meshes": 1,
+      "triangles": 12,
+      "bboxMm": [
+        40,
+        30,
+        20
+      ],
+      "dimensionsMatch": true
+    },
+    {
+      "file": "cylinder.step",
+      "rendered": true,
+      "nonBgPixels": 6436,
+      "meshes": 1,
+      "triangles": 260,
+      "bboxMm": [
+        20,
+        19.977,
+        30
+      ],
+      "dimensionsMatch": true
+    },
+    {
+      "file": "inch-block.step",
+      "rendered": true,
+      "nonBgPixels": 7389,
+      "meshes": 1,
+      "triangles": 12,
+      "bboxMm": [
+        25.4,
+        50.8,
+        76.2
+      ],
+      "dimensionsMatch": true
+    },
+    {
+      "file": "open-surface.step",
+      "rendered": true,
+      "nonBgPixels": 5078,
+      "meshes": 1,
+      "triangles": 2,
+      "bboxMm": [
+        20,
+        30,
+        0
+      ],
+      "dimensionsMatch": true
+    },
+    {
+      "file": "assembly.step",
+      "rendered": true,
+      "nonBgPixels": 5385,
+      "meshes": 2,
+      "triangles": 24,
+      "bboxMm": [
+        50,
+        20,
+        30
+      ],
+      "dimensionsMatch": null
+    },
+    {
+      "file": "box.iges",
+      "rendered": true,
+      "nonBgPixels": 7389,
+      "meshes": 1,
+      "triangles": 12,
+      "bboxMm": [
+        10,
+        20,
+        30
+      ],
+      "dimensionsMatch": null
+    }
+  ],
+  "pageErrors": [
+    "Failed to load resource: the server responded with a status of 404 (Not Found)"
+  ]
+}
