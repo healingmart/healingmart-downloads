@@ -1,0 +1,287 @@
+{
+  "schema_version": "1.0",
+  "copyright": "Original HealingMart-owned synthetic fixtures",
+  "rights": "May be redistributed by HealingMart; data contains no copied third-party media",
+  "warning": "Do not count as viewer-rendered until target format decoder tests pass",
+  "cases": [
+    {
+      "id": "owned-alpha.png",
+      "category": "image",
+      "extension": "png",
+      "path": "generated-fixtures/owned-alpha.png",
+      "sha256": "8014435e54161fbd8253e960a491dbf98e8cf9cda090b2648e1d96fb54f23766",
+      "size": 182,
+      "expected": "accept",
+      "properties": {
+        "width": 96,
+        "height": 64,
+        "alpha": true
+      },
+      "origin": "original HealingMart code",
+      "license": "self_generated",
+      "redistribution_cleared": true,
+      "notes": "",
+      "render_test_status": "not_run"
+    },
+    {
+      "id": "owned-alpha-corrupt.png",
+      "category": "image",
+      "extension": "png",
+      "path": "generated-fixtures/owned-alpha-corrupt.png",
+      "sha256": "251d058d2872544d811f0f9ba5ca78f1de9da33a0237979e1844e73f5093d1ff",
+      "size": 9,
+      "expected": "reject",
+      "properties": {
+        "reason": "header-invalid"
+      },
+      "origin": "original HealingMart code",
+      "license": "self_generated",
+      "redistribution_cleared": true,
+      "notes": "",
+      "render_test_status": "not_run"
+    },
+    {
+      "id": "owned-shape.svg",
+      "category": "image",
+      "extension": "svg",
+      "path": "generated-fixtures/owned-shape.svg",
+      "sha256": "71eb4c668832655866b988b1784ee0391777b41a8503aaf03e5dbe5645715d16",
+      "size": 114,
+      "expected": "accept",
+      "properties": {
+        "width": 96,
+        "height": 64
+      },
+      "origin": "original HealingMart code",
+      "license": "self_generated",
+      "redistribution_cleared": true,
+      "notes": "",
+      "render_test_status": "not_run"
+    },
+    {
+      "id": "owned-script.svg",
+      "category": "image",
+      "extension": "svg",
+      "path": "generated-fixtures/owned-script.svg",
+      "sha256": "3f67c8be987aa1db0ef99ce330286efe1929e729f5f9d1695b5fd0b987246244",
+      "size": 71,
+      "expected": "reject",
+      "properties": {
+        "reason": "unsafe-active-content"
+      },
+      "origin": "original HealingMart code",
+      "license": "self_generated",
+      "redistribution_cleared": true,
+      "notes": "Must be sanitized or sandboxed",
+      "render_test_status": "not_run"
+    },
+    {
+      "id": "owned-table.csv",
+      "category": "data",
+      "extension": "csv",
+      "path": "generated-fixtures/owned-table.csv",
+      "sha256": "391939b06c0dcdb3594cf19e1140ce0e17f53228dfe04e77dfaabb8051158ad1",
+      "size": 29,
+      "expected": "accept",
+      "properties": {
+        "rows": 2,
+        "columns": 2
+      },
+      "origin": "original HealingMart code",
+      "license": "self_generated",
+      "redistribution_cleared": true,
+      "notes": "",
+      "render_test_status": "not_run"
+    },
+    {
+      "id": "owned-table.tsv",
+      "category": "data",
+      "extension": "tsv",
+      "path": "generated-fixtures/owned-table.tsv",
+      "sha256": "4cbe594c46cb594751bf2724e6f6b9650632feec2cb90e3bb626c886c496499d",
+      "size": 29,
+      "expected": "accept",
+      "properties": {
+        "rows": 2,
+        "columns": 2
+      },
+      "origin": "original HealingMart code",
+      "license": "self_generated",
+      "redistribution_cleared": true,
+      "notes": "",
+      "render_test_status": "not_run"
+    },
+    {
+      "id": "owned-data.json",
+      "category": "data",
+      "extension": "json",
+      "path": "generated-fixtures/owned-data.json",
+      "sha256": "9941e75350e286db75cf88c6fc0a1d9008e6144cf974ea94bf43903fc8e8ae69",
+      "size": 27,
+      "expected": "accept",
+      "properties": {
+        "count": 2
+      },
+      "origin": "original HealingMart code",
+      "license": "self_generated",
+      "redistribution_cleared": true,
+      "notes": "",
+      "render_test_status": "not_run"
+    },
+    {
+      "id": "owned-data-corrupt.json",
+      "category": "data",
+      "extension": "json",
+      "path": "generated-fixtures/owned-data-corrupt.json",
+      "sha256": "eee1442013c74b263c07d1cc8d22597d1ea64cac3d5c1f3e0d7c88ed57e62d4c",
+      "size": 10,
+      "expected": "reject",
+      "properties": {
+        "reason": "syntax error"
+      },
+      "origin": "original HealingMart code",
+      "license": "self_generated",
+      "redistribution_cleared": true,
+      "notes": "",
+      "render_test_status": "not_run"
+    },
+    {
+      "id": "owned-readme.md",
+      "category": "text",
+      "extension": "md",
+      "path": "generated-fixtures/owned-readme.md",
+      "sha256": "a7256f6acc5031d2465b2eeae0f7024c3a3e6cbc658fe6b42dbe5148c39c10ca",
+      "size": 58,
+      "expected": "accept",
+      "properties": {
+        "headings": 1
+      },
+      "origin": "original HealingMart code",
+      "license": "self_generated",
+      "redistribution_cleared": true,
+      "notes": "",
+      "render_test_status": "not_run"
+    },
+    {
+      "id": "owned-hello.txt",
+      "category": "text",
+      "extension": "txt",
+      "path": "generated-fixtures/owned-hello.txt",
+      "sha256": "3bbf2edada0f9c3a0c845827b47321ca573ffd1812a9b2a66315eb33f4d6fa8f",
+      "size": 24,
+      "expected": "accept",
+      "properties": {
+        "lines": 2
+      },
+      "origin": "original HealingMart code",
+      "license": "self_generated",
+      "redistribution_cleared": true,
+      "notes": "",
+      "render_test_status": "not_run"
+    },
+    {
+      "id": "owned-tone.wav",
+      "category": "audio",
+      "extension": "wav",
+      "path": "generated-fixtures/owned-tone.wav",
+      "sha256": "61374a26d2669343172b4108c8a7cf2568e8dd520c9e937274ba7d08512b391e",
+      "size": 3244,
+      "expected": "accept",
+      "properties": {
+        "channels": 1,
+        "sample_rate": 16000,
+        "frames": 1600
+      },
+      "origin": "original HealingMart code",
+      "license": "self_generated",
+      "redistribution_cleared": true,
+      "notes": "",
+      "render_test_status": "not_run"
+    },
+    {
+      "id": "owned-files.zip",
+      "category": "archive",
+      "extension": "zip",
+      "path": "generated-fixtures/owned-files.zip",
+      "sha256": "73494af7803966ccb2ba4d8365e80a372011c002a2e8aa3a8b4feee22ce5583f",
+      "size": 284,
+      "expected": "accept",
+      "properties": {
+        "files": 2
+      },
+      "origin": "original HealingMart code",
+      "license": "self_generated",
+      "redistribution_cleared": true,
+      "notes": "",
+      "render_test_status": "not_run"
+    },
+    {
+      "id": "owned-traversal.zip",
+      "category": "archive",
+      "extension": "zip",
+      "path": "generated-fixtures/owned-traversal.zip",
+      "sha256": "74f827c55c14cd357bfd134c099c74a96cca6f2f6363258b7aa2228d9fabd367",
+      "size": 128,
+      "expected": "reject",
+      "properties": {
+        "reason": "zip-slip traversal"
+      },
+      "origin": "original HealingMart code",
+      "license": "self_generated",
+      "redistribution_cleared": true,
+      "notes": "",
+      "render_test_status": "not_run"
+    },
+    {
+      "id": "owned-truncated.zip",
+      "category": "archive",
+      "extension": "zip",
+      "path": "generated-fixtures/owned-truncated.zip",
+      "sha256": "1bc0bad4872d3d8061f2b057a2e60548d0a13986876449648421ae70580e5032",
+      "size": 7,
+      "expected": "reject",
+      "properties": {
+        "reason": "truncated central directory"
+      },
+      "origin": "original HealingMart code",
+      "license": "self_generated",
+      "redistribution_cleared": true,
+      "notes": "",
+      "render_test_status": "not_run"
+    },
+    {
+      "id": "owned-files.tar",
+      "category": "archive",
+      "extension": "tar",
+      "path": "generated-fixtures/owned-files.tar",
+      "sha256": "92908dd2061dab3c1515dfe939e94280a999bb90f3509cfc1ed32b05593f20d1",
+      "size": 10240,
+      "expected": "accept",
+      "properties": {
+        "files": 1
+      },
+      "origin": "original HealingMart code",
+      "license": "self_generated",
+      "redistribution_cleared": true,
+      "notes": "",
+      "render_test_status": "not_run"
+    },
+    {
+      "id": "owned-gzip.gz",
+      "category": "archive",
+      "extension": "gz",
+      "path": "generated-fixtures/owned-gzip.gz",
+      "sha256": "ba70e227b6ee9edec33a42c7955f836912ff449fe6c8a669b159d7ef087e2679",
+      "size": 37,
+      "expected": "accept",
+      "properties": {
+        "decompressed_sha256": "5891b5b522d5df086d0ff0b110fbd9d21bb4fc7163af34d08286a2e846f6be03"
+      },
+      "origin": "original HealingMart code",
+      "license": "self_generated",
+      "redistribution_cleared": true,
+      "notes": "",
+      "render_test_status": "not_run"
+    }
+  ]
+}
