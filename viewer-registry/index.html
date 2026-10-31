@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex,nofollow"><meta name="theme-color" content="#101417">
+<title>HealingMart Viewer Registry · 검증 전용</title>
+<style>
+:root{color-scheme:dark;--bg:#101417;--panel:#171d21;--panel2:#1b2427;--line:#304045;--text:#e8eeed;--muted:#9caeae;--accent:#a9c69c}
+*{box-sizing:border-box}body{margin:0;color:var(--text);background:var(--bg);font:14px/1.6 "Pretendard Variable","Apple SD Gothic Neo",system-ui,sans-serif}
+a{color:#a9d8b4;text-decoration:none}a:hover{text-decoration:underline}button,input,select{font:inherit}input,select{color:var(--text);background:#0d1518;border:1px solid #405255;padding:10px 12px;border-radius:8px}input:focus-visible,select:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.shell{margin:auto;max-width:1760px;padding:24px clamp(14px,2.2vw,40px) 55px}
+header{display:flex;align-items:center;justify-content:space-between;gap:18px;padding-bottom:21px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+mark{color:#102018;background:#bdd9a7;font-size:10px;padding:4px 8px;border-radius:6px;font-weight:800;letter-spacing:.06em}h1{font-size:clamp(23px,3.4vw,36px);margin:13px 0 5px;line-height:1.2;letter-spacing:-.04em}
+h2{font-size:19px;margin:0 0 13px}p{margin:5px 0;color:var(--muted)}
+.summary{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin:22px 0}
+.metric{padding:16px 15px;border:1px solid var(--line);border-radius:12px;background:var(--panel)}.metric b{display:block;font-size:clamp(23px,3vw,37px);line-height:1.3;font-variant-numeric:tabular-nums;letter-spacing:-.04em}.metric span{font-size:11px;color:var(--muted)}
+.info{border-left:3px solid #c6a86b;padding:11px 14px;background:#25251c;border-radius:4px;margin:20px 0;font-size:12px;color:#ded8c3}
+.toolbar{display:flex;align-items:center;flex-wrap:wrap;gap:10px;margin:18px 0 12px}.toolbar input{flex:1;min-width:180px}.toolbar select{min-width:130px}
+.surface{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--panel)}
+table{width:100%;border-collapse:collapse;font-size:12px}th{text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.04em;color:#a5b7b4;background:#202a2d;position:sticky;top:0}td,th{padding:12px;border-bottom:1px solid #2d393d;vertical-align:middle}
+tr:hover td{background:#202c2f}code{font:12px/1.3 Consolas,monospace;color:#deeee2}small,.tag{font-size:10px;color:#aabbac}.tag{display:inline-block;padding:3px 8px;border:1px solid #52624c;border-radius:99px;background:#29352d}.tag.muted{background:#20292c;color:#a9b6b8;border-color:#405156}
+.engines{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px;margin-top:14px}.engine{border:1px solid var(--line);border-radius:10px;background:var(--panel);padding:15px}.engine h3{font-size:14px;margin:0 0 5px}.engine p{font-size:11px;min-height:34px}.engine .meta{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0;font-size:11px}
+section{margin-top:25px}.foot{padding:20px 0;font-size:11px;color:#96a5a5}.err{padding:15px;color:#dba4a4}
+@media(max-width:750px){.summary{grid-template-columns:repeat(2,minmax(0,1fr))}.toolbar{display:grid;grid-template-columns:1fr 1fr}.toolbar input{grid-column:span 2}.surface{overflow:auto}table{min-width:660px}header{align-items:flex-start}}
+</style></head><body><div class="shell">
+<header><div><mark>검증 전용 · 운영 미연결</mark><h1>HealingMart Viewer Registry</h1><p>오픈소스 엔진 · 상업 이용 조건 · 파일 형식별 실증 현황</p></div>
+<div><a href="https://www.healing-mart.com/" rel="noopener">HealingMart</a> · <a href="https://github.com/healingmart/healingmart-downloads/tree/file-studio-preview-20261101/viewer-registry" target="_blank" rel="noopener noreferrer">GitHub 검증 자료</a></div></header>
+<div class="summary" id="summary"><div class="metric">목록 로딩 중…</div></div>
+<div class="info"><strong>중요:</strong> 이 페이지는 파일을 보여주는 통합 뷰어가 아니라 <strong>후보와 검증 기록을 공개하는 품질관리 현황판</strong>입니다. 확장자 후보 수는 작동하는 뷰어 수가 아닙니다. 모든 형식은 실증·라이선스 심사가 끝나기 전 운영 배포가 차단됩니다.</div>
+<section><h2>파일 형식별 심사 현황</h2><div class="toolbar"><input type="search" id="search" placeholder="확장자, 엔진, 분류 검색" aria-label="파일 형식 검색">
+<select id="category" aria-label="분류"><option value="">모든 분야</option></select>
+<select id="state" aria-label="검증 상태"><option value="">모든 검증 단계</option><option value="candidate">조사 후보</option><option value="representative_pass">대표 샘플 통과</option><option value="isolated_proof">독립 실험실 입증</option></select>
+</div><p id="matches" aria-live="polite"></p><div class="surface"><table><thead><tr><th>형식</th><th>분류</th><th>후보 엔진</th><th>증명 단계</th><th>상업 배포</th></tr></thead><tbody id="formatRows"></tbody></table></div></section>
+<section><h2>엔진 라이선스 검토</h2><p>아래 라이선스는 상위 프로젝트의 선언 정보를 검토한 것입니다. 배포 파일·코덱·의존성·고지 의무까지 완전히 심사했다는 뜻이 아닙니다.</p><div id="engines" class="engines"></div></section>
+<section><h2>재현 가능한 테스트 자산</h2><p>원본 제작 파일 16개, 정상 11개와 안전 예외 검사 5개. <a href="./generated-fixtures-manifest.json">샘플 파일·SHA-256 기록</a> · <a href="./generated-fixtures/">테스트 파일 목록</a> · <a href="./registry-gate.cjs">배포 차단 검증 코드</a></p></section>
+<div class="foot">생성 기준: 2026-11-01 · 별도 Cloudflare 실험실 · 사용자 파일 수집 없음 · 기존 tools.healing-mart.com 및 본 운영 저장소 main 미수정</div>
+</div>
+<script>
+const $=id=>document.getElementById(id);
+const states={candidate:"조사 후보 · 미검증",representative_pass:"대표 샘플 통과",isolated_proof:"독립 실험실 입증"};
+let formats=[],engines=[],engineMap={};
+function el(tag,text,cl){const x=document.createElement(tag);if(text!==undefined)x.textContent=String(text);if(cl)x.className=cl;return x}
+function metric(n,label){const box=el('div',undefined,'metric');box.append(el('b',n),el('span',label));return box}
+function refresh(){
+ const query=$('search').value.toLowerCase().trim(),category=$('category').value,state=$('state').value;
+ const list=formats.filter(x=>(!category||x.category===category)&&(!state||x.stage===state)&&(!query||[x.extension,x.category,x.engine_id,x.group].join(' ').toLowerCase().includes(query)));
+ $('matches').textContent='검색 결과 '+list.length+'건 / 전체 '+formats.length+'개 확장자 후보';
+ const root=$('formatRows');root.replaceChildren();
+ for(const x of list.slice(0,300)){const tr=document.createElement('tr');
+ tr.append(el('td','.'+x.extension),el('td',x.category));
+ const src=document.createElement('td'),link=document.createElement('a');link.href=engineMap[x.engine_id]?.upstream||'#';link.target='_blank';link.rel='noopener noreferrer';link.textContent=x.engine_id;src.append(link);tr.append(src);
+ const t=el('td');t.append(el('span',states[x.stage]||x.stage,'tag '+(x.stage==='candidate'?'muted':'')));tr.append(t);
+ tr.append(el('td',x.commercial_production_approved?'통과':'차단'));root.append(tr)}
+ if(list.length>300){const tr=document.createElement('tr'),td=el('td','결과가 300건을 초과했습니다. 검색 조건을 좁혀주세요.');td.colSpan=5;tr.append(td);root.append(tr)}
+}
+(async()=>{
+ try{
+  const [er,fr]=await Promise.all([fetch('./engines.json',{cache:'no-store'}),fetch('./formats.json',{cache:'no-store'})]);
+  if(!er.ok||!fr.ok)throw Error('HTTP '+er.status+'/'+fr.status);
+  const [e,f]=await Promise.all([er.json(),fr.json()]);engines=e.engines;formats=f.formats;engineMap=Object.fromEntries(engines.map(x=>[x.id,x]));
+  $('summary').replaceChildren(metric(engines.length,'검토 대상 엔진'),metric(formats.length,'확장자 후보'),metric(formats.filter(x=>x.stage==='representative_pass').length,'3D 샘플 통과'),metric(formats.filter(x=>x.stage==='isolated_proof').length,'독립 CAD 실험'),metric(formats.filter(x=>x.commercial_production_approved).length,'상업 운영 승인'));
+  for(const c of [...new Set(formats.map(x=>x.category))].sort()){let o=document.createElement('option');o.value=c;o.textContent=c;$('category').append(o)}
+  for(const e of engines){const box=el('article',undefined,'engine');box.append(el('h3',e.id),el('p',e.scope));
+    const info=el('div',undefined,'meta');info.append(el('span',e.license,'tag'),el('span',e.policy,'tag muted'));box.append(info);
+    const a=el('a','공식 라이선스 근거 확인');a.href=e.license_evidence;a.target='_blank';a.rel='noopener noreferrer';box.append(a);$('engines').append(box)}
+  ['search','category','state'].forEach(id=>$(id).addEventListener('input',refresh));refresh();
+ }catch(e){$('summary').replaceChildren(el('p','검증 기록 로딩 실패: '+e.message,'err'))}
+})();
+</script></body></html>
