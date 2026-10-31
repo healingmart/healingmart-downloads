@@ -1,0 +1,114 @@
+[
+  {
+    "file": "block.step",
+    "success": true,
+    "meshCount": 1,
+    "vertexCount": 24,
+    "triangleCount": 12,
+    "bboxMm": [
+      40,
+      30,
+      20
+    ],
+    "expectedDimsMm": [
+      40,
+      30,
+      20
+    ],
+    "bboxMatch": true,
+    "sha256": "da9e92aa49673bf1a28a30cebbeb17cc77b0f10ef871129c445e875d2d21bd55",
+    "status": "geometry-pass"
+  },
+  {
+    "file": "cylinder.step",
+    "success": true,
+    "meshCount": 1,
+    "vertexCount": 266,
+    "triangleCount": 260,
+    "bboxMm": [
+      20,
+      19.977,
+      30
+    ],
+    "expectedDimsMm": [
+      20,
+      20,
+      30
+    ],
+    "bboxMatch": true,
+    "sha256": "6e34ef767189a92c2d50f4c9772eff7c5d0c429e0d63ea35a25319d6afd9c387",
+    "status": "geometry-pass"
+  },
+  {
+    "file": "inch-block.step",
+    "success": true,
+    "meshCount": 1,
+    "vertexCount": 24,
+    "triangleCount": 12,
+    "bboxMm": [
+      25.4,
+      50.8,
+      76.2
+    ],
+    "expectedDimsMm": [
+      25.4,
+      50.8,
+      76.2
+    ],
+    "bboxMatch": true,
+    "sha256": "42aba73b93cce5b84fdb165da0dfda9558e9a1c567654f0f2fad0de678c98fdc",
+    "status": "geometry-pass"
+  },
+  {
+    "file": "open-surface.step",
+    "success": true,
+    "meshCount": 1,
+    "vertexCount": 4,
+    "triangleCount": 2,
+    "bboxMm": [
+      20,
+      30,
+      0
+    ],
+    "expectedDimsMm": [
+      20,
+      30,
+      0
+    ],
+    "bboxMatch": true,
+    "sha256": "3b9cfe6e949f4ab6b11716cc6d566a908d2077acfcfa5bc08fba18e5a677029c",
+    "status": "geometry-pass"
+  },
+  {
+    "file": "assembly.step",
+    "success": true,
+    "meshCount": 2,
+    "vertexCount": 48,
+    "triangleCount": 24,
+    "bboxMm": [
+      50,
+      20,
+      30
+    ],
+    "expectedDimsMm": null,
+    "bboxMatch": null,
+    "sha256": "b57f6b685994e0fb3305243de5bff74a357736f7be98175a754e6e2b808eaabe",
+    "status": "geometry-pass"
+  },
+  {
+    "file": "box.iges",
+    "success": true,
+    "meshCount": 1,
+    "vertexCount": 24,
+    "triangleCount": 12,
+    "bboxMm": [
+      10,
+      20,
+      30
+    ],
+    "expectedDimsMm": null,
+    "bboxMatch": null,
+    "sha256": "d7e8d1703e5265826538b417a1b2d556326ba264b6ff45e70f641dd5d8511a40",
+    "status": "geometry-pass"
+  }
+]
