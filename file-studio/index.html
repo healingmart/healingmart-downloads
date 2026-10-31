@@ -56,6 +56,20 @@ html{scrollbar-color:#374642 #0e1417}body{background:#0e1417;font-family:'Preten
 body.hm-in-existing-shell .hm-site-sidebar,body.hm-in-existing-shell .hm-site-backdrop,body.hm-in-existing-shell .hm-site-mobile-menu{display:none!important}
 body.hm-in-existing-shell .app-shell{margin-left:0!important}
 </style>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/"}}</script>
+<style id="hm3d-style">
+.hm3d-host{position:absolute;inset:0;min-height:300px;touch-action:none;overflow:hidden;z-index:1;background:#161f24}
+.hm3d-host[hidden]{display:none!important}
+.hm3d-host canvas{display:block;width:100%;height:100%;touch-action:none}
+.hm3d-message{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:35px;color:#d2e3de;font-size:12px;z-index:2;line-height:1.7}
+.hm3d-toolbar{position:absolute;top:9px;left:9px;right:9px;z-index:3;display:flex;gap:5px;align-items:center;flex-wrap:wrap;pointer-events:none}
+.hm3d-toolbar span{margin-right:auto;font-weight:800;font-size:10px;color:#d6e9df;background:#23332ecc;border:1px solid #526158;padding:7px 9px;border-radius:7px}
+.hm3d-toolbar button{pointer-events:auto;background:#1a2626dd;color:#cde6d8;border:1px solid #50685e;border-radius:7px;padding:7px 8px;font-size:10px}
+.hm3d-toolbar button:hover{background:#2c423b}
+.hm3d-hint{position:absolute;bottom:9px;left:50%;transform:translateX(-50%);width:max-content;max-width:calc(100% - 20px);z-index:3;color:#bed2c9;background:#121c20c9;border:1px solid #3b4c49;border-radius:50px;padding:6px 10px;font-size:9px;text-align:center;pointer-events:none}
+.stage:has(.hm3d-host:not([hidden])){padding:0;height:clamp(385px,55vh,670px)}
+@media(max-width:900px){.stage:has(.hm3d-host:not([hidden])){height:390px}}
+</style>
 </head>
 <body>
 
@@ -94,7 +108,7 @@ body.hm-in-existing-shell .app-shell{margin-left:0!important}
     <div class="list-foot"><span>선택 <b id="selectedCount">0</b>개</span><span>총 <b id="totalBytes">0 B</b></span></div><div class="policy">최대 150개 · 작업 목록 합계 250MB. 대용량 파일은 기기 성능에 따라 제한될 수 있습니다.</div>
   </aside>
   <section class="panel center-panel"><div class="panel-title"><strong>02 · 작업 미리보기</strong><span id="previewType">대기 중</span></div>
-    <div class="stage" id="stage"><div class="stage-empty" id="stageEmpty"><div class="outline-pic">▧</div><strong>작업할 파일을 추가해 주세요</strong><p>하나의 파일을 선택하면 원본을 미리 볼 수 있습니다.</p></div><img id="previewImage" alt="선택한 이미지 파일 미리보기" hidden><div class="stage-corner" id="stageCorner">LIVE PREVIEW</div></div>
+    <div class="stage" id="stage"><div class="stage-empty" id="stageEmpty"><div class="outline-pic">▧</div><strong>작업할 파일을 추가해 주세요</strong><p>이미지와 GLB·GLTF·STL·OBJ·FBX·PLY 등 3D 파일은 실제 미리보기를 지원합니다.</p></div><img id="previewImage" alt="선택한 이미지 파일 미리보기" hidden><div class="hm3d-host" id="viewer3dHost" aria-label="3D 모델 미리보기" hidden></div><div class="stage-corner" id="stageCorner">LIVE PREVIEW</div></div>
     <div class="file-meta"><strong id="previewFilename">선택된 파일 없음</strong><span id="previewMeta">파일 추가 후 실시간으로 작업합니다.</span></div>
     <div class="pipeline"><div class="pipe-head"><span>현재 작업 흐름</span><small>각 단계를 순서대로 적용하세요</small></div><div class="pipe-nodes"><div><small>START</small><b>파일 추가</b></div><span class="pipe-arrow">›</span><div><small>EDIT</small><b id="pipeEdit">이미지 작업</b></div><span class="pipe-arrow">›</span><div><small>EXPORT</small><b>ZIP / 개별 저장</b></div></div></div>
     <div class="progress-area" id="progressArea" hidden><div class="progress-head"><strong id="progressLabel" role="status" aria-live="polite">준비 중</strong><span id="progressNumber">0%</span></div><div class="track"><span id="progressFill"></span></div></div>
@@ -151,9 +165,39 @@ $$('.file-row').forEach(row=>{row.addEventListener('click',e=>{let id=Number(row
 if(!state.items.some(i=>i.id===state.active))state.active=state.items[0]?.id||null;preview();}
 function activeItem(){return state.items.find(i=>i.id===state.active)}
 function clearPreview(){if(state.previewUrl){URL.revokeObjectURL(state.previewUrl);state.previewUrl=null}}
-function preview(){clearPreview();const it=activeItem();const img=$('#previewImage');img.hidden=true;img.removeAttribute('src');$('#stageEmpty').hidden=!!it;
-$('#previewFilename').textContent=it?.name||'선택된 파일 없음';$('#previewMeta').textContent=it?fmt(it.file.size):'파일 추가 후 실시간으로 작업합니다.';$('#previewType').textContent=it?ext(it.name).toUpperCase()||'FILE':'대기 중';
-if(it&&isImage(it)){state.previewUrl=URL.createObjectURL(it.file);img.src=state.previewUrl;img.hidden=false;$('#stageEmpty').hidden=true;img.style.transform=`rotate(${state.rotation}deg) scale(${$('#flipH').checked?-1:1},${$('#flipV').checked?-1:1})`;} else if(it){$('#stageEmpty').hidden=false;$('#stageEmpty strong').textContent=ext(it.name)==='zip'?'ZIP 파일 · 압축 탭에서 내부 확인 가능':'파일을 선택했습니다';$('#stageEmpty p').textContent='현재 파일을 다운로드하거나 이름을 변경하고 ZIP으로 묶을 수 있습니다.';}
+let viewer3dModule=null, viewer3dFile=null, viewer3dRequest=0;
+function is3D(it){return !!it && /\.(glb|gltf|obj|stl|fbx|ply|3mf|dae)$/i.test(it.name)}
+function preview(){
+ clearPreview();const it=activeItem();const img=$('#previewImage');const host=$('#viewer3dHost');
+ img.hidden=true;img.removeAttribute('src');
+ $('#previewFilename').textContent=it?.name||'선택된 파일 없음';
+ $('#previewMeta').textContent=it?fmt(it.file.size):'파일 추가 후 실시간으로 작업합니다.';
+ $('#previewType').textContent=it?ext(it.name).toUpperCase()||'FILE':'대기 중';
+ if(is3D(it)){
+   $('#stageEmpty').hidden=true;host.hidden=false;
+   if(viewer3dFile===it.file)return;
+   viewer3dFile=it.file;const request=++viewer3dRequest;
+   host.innerHTML='<div class="hm3d-message">3D 렌더링 엔진을 준비하고 있습니다…</div>';
+   const load=viewer3dModule ? Promise.resolve(viewer3dModule) : import(URL.createObjectURL(new Blob([document.getElementById('viewer3dSource').textContent],{type:'text/javascript'})));
+   load.then(mod=>{
+     viewer3dModule=mod;
+     if(request!==viewer3dRequest||activeItem()?.file!==it.file)return;
+     mod.display(it.file,state.items.map(i=>i.file),host).catch(error=>console.warn('[FileStudio 3D]',error.message));
+   }).catch(error=>{if(request!==viewer3dRequest)return;host.textContent='';const d=document.createElement('div');d.className='hm3d-message';d.textContent='3D 엔진을 불러오지 못했습니다: '+error.message;host.append(d)});
+   return;
+ }
+ ++viewer3dRequest;
+ if(viewer3dFile){viewer3dModule?.dispose();viewer3dFile=null;}
+ host.hidden=true;host.textContent='';
+ $('#stageEmpty').hidden=!!it;
+ if(it&&isImage(it)){
+   state.previewUrl=URL.createObjectURL(it.file);img.src=state.previewUrl;img.hidden=false;$('#stageEmpty').hidden=true;
+   img.style.transform=`rotate(${state.rotation}deg) scale(${$('#flipH').checked?-1:1},${$('#flipV').checked?-1:1})`;
+ }else if(it){
+   $('#stageEmpty').hidden=false;
+   $('#stageEmpty strong').textContent=ext(it.name)==='zip'?'ZIP 파일 · 압축 탭에서 내부 확인 가능':'파일을 선택했습니다';
+   $('#stageEmpty p').textContent='이 파일의 미리보기는 아직 지원하지 않습니다. 변환·이름 변경·ZIP으로 묶을 수 있습니다.';
+ }
 }
 function resetTransform(){state.rotation=0;$('#flipH').checked=false;$('#flipV').checked=false;$$('[data-rotate]').forEach(el=>el.classList.remove('selected'));preview()}
 function resetAll(){if(state.busy)return;clearPreview();state.items=[];state.originals=[];state.selected.clear();state.active=null;resetZip();resetTransform();$('#progressArea').hidden=true;render();announce('작업 목록을 비웠습니다. 원본 파일은 변경되지 않았습니다.')}
@@ -208,5 +252,147 @@ bind();updateRenameExample();render();
  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&sidebar.classList.contains('is-open'))setMenu(false)});
  if(new URLSearchParams(location.search).get('embedded')==='1')document.body.classList.add('hm-in-existing-shell');
 })();
+</script>
+<script type="text/plain" id="viewer3dSource">
+/* HealingMart File Studio - real 3D preview (isolated test only)
+ * Engine: three.js (MIT); CDN loaded lazily when a 3D file is selected.
+ * No file uploads to an application server. Any external textures are loaded by browser via Object URLs.
+ */
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { STLLoader } from 'three/addons/loaders/STLLoader.js';
+import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
+import { MTLLoader } from 'three/addons/loaders/MTLLoader.js';
+import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';
+import { PLYLoader } from 'three/addons/loaders/PLYLoader.js';
+import { ThreeMFLoader } from 'three/addons/loaders/3MFLoader.js';
+import { ColladaLoader } from 'three/addons/loaders/ColladaLoader.js';
+
+let active = null;
+let generation = 0;
+function stop() {
+  ++generation;
+  if (!active) return;
+  const s = active; active=null;
+  cancelAnimationFrame(s.raf);
+  s.resize?.disconnect();
+  s.controls?.dispose();
+  if (s.mesh) s.mesh.traverse(n => {
+    if (n.geometry) n.geometry.dispose();
+    if (n.material) for (const m of [n.material].flat()) {
+      if (!m) continue;
+      for (const k of Object.keys(m)) if (m[k]?.isTexture) m[k].dispose();
+      m.dispose();
+    }
+  });
+  for (const url of s.urls) URL.revokeObjectURL(url);
+  s.renderer?.dispose();
+  s.renderer?.domElement.remove();
+}
+function fail(host, label) { host.textContent=''; const d=document.createElement('div');d.className='hm3d-message';d.textContent=label;host.append(d); }
+function ext(name){return (name.split('.').pop()||'').toLowerCase()}
+function createFileResolver(files, urls){
+  const byName = new Map(files.map(f => [f.name.replaceAll('\\','/').split('/').pop().toLowerCase(),f]));
+  return (path)=>{
+    let base=path;
+    try{base=decodeURIComponent(path.split(/[?#]/)[0]).replaceAll('\\','/').split('/').pop()}catch{}
+    let file=byName.get(base.toLowerCase());
+    if (!file) return path;
+    const url=URL.createObjectURL(file);urls.push(url);return url;
+  };
+}
+async function parseFile(file, files, manager){
+  const format=ext(file.name);
+  if (format==='glb'||format==='gltf'){
+    const l=new GLTFLoader(manager);
+    const d=format==='glb'?await file.arrayBuffer():await file.text();
+    const g=await l.parseAsync(d,'');return {mesh:g.scene,clips:g.animations||[],kind:'gltf'};
+  }
+  if(format==='stl'){
+    const g=new STLLoader(manager).parse(await file.arrayBuffer());
+    if(!g.attributes.normal)g.computeVertexNormals();
+    const hasVertexColors=!!g.attributes.color;
+    return {mesh:new THREE.Mesh(g,new THREE.MeshStandardMaterial({color:0xb7d9db,metalness:0.14,roughness:0.48,vertexColors:hasVertexColors,side:THREE.DoubleSide})),clips:[],kind:'mesh'};
+  }
+  if(format==='obj'){
+    const loader=new OBJLoader(manager);
+    const mtl=files.find(f=>f.name.toLowerCase()===file.name.replace(/\.obj$/i,'.mtl').toLowerCase())||files.find(f=>ext(f.name)==='mtl');
+    if(mtl){const materials=new MTLLoader(manager).parse(await mtl.text(),'');materials.preload();loader.setMaterials(materials)}
+    return {mesh:loader.parse(await file.text()),clips:[],kind:'obj'};
+  }
+  if(format==='fbx'){
+    const mesh=new FBXLoader(manager).parse(await file.arrayBuffer(),'');
+    return {mesh,clips:mesh.animations||[],kind:'fbx'};
+  }
+  if(format==='ply'){
+    const geometry=new PLYLoader(manager).parse(await file.arrayBuffer());
+    if(!geometry.attributes.normal)geometry.computeVertexNormals();
+    return {mesh:new THREE.Mesh(geometry,new THREE.MeshStandardMaterial({color:0xc1dce9,vertexColors:!!geometry.attributes.color,metalness:0.12,roughness:0.63,side:THREE.DoubleSide})),clips:[],kind:'mesh'};
+  }
+  if(format==='3mf'){
+    const mesh=new ThreeMFLoader(manager).parse(await file.arrayBuffer());return {mesh,clips:[],kind:'mesh'};
+  }
+  if(format==='dae'){
+    const r=new ColladaLoader(manager).parse(await file.text(),'');return {mesh:r.scene,clips:r.animations||[],kind:'collada'};
+  }
+  throw Error('이 형식은 아직 3D 미리보기를 지원하지 않습니다.');
+}
+export async function display(file, relatedFiles, host){
+  stop();const run=++generation;
+  host.textContent='';host.classList.add('hm3d-preview');host.hidden=false;
+  const status=document.createElement('div');status.className='hm3d-message';status.textContent='3D 파일을 분석하고 있습니다…';host.append(status);
+  const session={urls:[],mesh:null,renderer:null,controls:null,raf:0,resize:null};active=session;
+  try {
+    if(!window.WebGL2RenderingContext)throw Error('이 브라우저에서 WebGL2를 사용할 수 없습니다.');
+    const manager=new THREE.LoadingManager();manager.setURLModifier(createFileResolver(relatedFiles,session.urls));
+    const {mesh,clips,kind}=await parseFile(file,relatedFiles,manager);
+    if(run!==generation||session!==active){mesh.traverse?.(n=>n.geometry?.dispose());return}
+    if(!mesh) throw Error('표시할 메시가 없습니다.');
+    session.mesh=mesh;
+    const scene=new THREE.Scene();scene.background=new THREE.Color(0x161f24);
+    const camera=new THREE.PerspectiveCamera(38,1,0.001,100000);
+    const renderer=new THREE.WebGLRenderer({antialias:true,alpha:false,preserveDrawingBuffer:true});
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
+    renderer.outputColorSpace=THREE.SRGBColorSpace;
+    renderer.toneMapping=THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure=1.35;
+    session.renderer=renderer;
+    host.textContent='';host.append(renderer.domElement);
+    scene.add(new THREE.HemisphereLight(0xe8f5ff,0x52606c,2.4));
+    const key=new THREE.DirectionalLight(0xffffff,3.1);key.position.set(3,7,6);scene.add(key);
+    const fill=new THREE.DirectionalLight(0x9ed0ff,1.2);fill.position.set(-5,2,-3);scene.add(fill);
+    scene.add(mesh);
+    mesh.updateMatrixWorld(true);
+    const box=new THREE.Box3().setFromObject(mesh);
+    if(box.isEmpty())throw Error('모델에 표시할 도형이 없습니다.');
+    const size=box.getSize(new THREE.Vector3());
+    const center=box.getCenter(new THREE.Vector3());
+    mesh.position.sub(center);
+    const max=Math.max(size.x,size.y,size.z,0.0001);
+    const distance=max*2.8;
+    camera.position.set(distance*.75,distance*.52,distance);
+    camera.near=Math.max(max/10000,0.001);camera.far=Math.max(max*100,100);camera.updateProjectionMatrix();
+    const controls=new OrbitControls(camera,renderer.domElement);session.controls=controls;
+    controls.enableDamping=true;controls.dampingFactor=0.075;controls.target.set(0,0,0);controls.minDistance=max*.05;controls.maxDistance=max*40;controls.update();
+    const grid=new THREE.GridHelper(max*2.6,18,0x47706e,0x334349);grid.position.y=-(size.y*.5+max*.035);scene.add(grid);
+    let showGrid=true;
+    const toolbar=document.createElement('div');toolbar.className='hm3d-toolbar';
+    const label=document.createElement('span');label.textContent='3D · '+ext(file.name).toUpperCase();
+    const make=(s,action)=>{const b=document.createElement('button');b.type='button';b.textContent=s;b.onclick=action;return b};
+    toolbar.append(label,make('화면 맞춤',()=>{controls.reset();controls.target.set(0,0,0);camera.position.set(distance*.75,distance*.52,distance);controls.update()}),make('격자',()=>{showGrid=!showGrid;grid.visible=showGrid}),make('PNG 캡처',()=>{renderer.render(scene,camera);const a=document.createElement('a');a.download=file.name.replace(/\.[^.]+$/,'')+'-preview.png';a.href=renderer.domElement.toDataURL('image/png');a.click()}));
+    host.append(toolbar);
+    const helper=document.createElement('div');helper.className='hm3d-hint';helper.textContent='마우스로 회전 · 휠로 확대 · 우클릭 이동 · 터치 지원';host.append(helper);
+    const resized=()=>{const width=Math.max(host.clientWidth,200),height=Math.max(host.clientHeight,280);renderer.setSize(width,height,false);camera.aspect=width/height;camera.updateProjectionMatrix()};
+    session.resize=new ResizeObserver(resized);session.resize.observe(host);resized();
+    let mixer=null;
+    if(clips.length){mixer=new THREE.AnimationMixer(mesh);mixer.clipAction(clips[0]).play();}
+    const clock=new THREE.Clock();
+    const frame=()=>{if(active!==session)return;session.raf=requestAnimationFrame(frame);if(mixer)mixer.update(Math.min(clock.getDelta(),.05));controls.update();renderer.render(scene,camera)};frame();
+    return {format:ext(file.name),clipCount:clips.length,meshes:(()=>{let n=0;mesh.traverse(o=>{if(o.isMesh)n++});return n})(),kind};
+  }catch(e){if(active===session){stop();fail(host,'3D 미리보기 오류: '+String(e.message||e))}throw e}
+}
+export {stop as dispose};
+
 </script>
 </body></html>
