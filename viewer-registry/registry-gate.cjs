@@ -53,7 +53,7 @@ function checkRegistry(){
  for(const f of fmt.formats){
   const key=f.category+":"+f.extension;
   if(keys.has(key))errs.push("duplicate category/extension: "+key);keys.add(key);
-  if(!/^[a-z0-9.]{1,16}$/.test(f.extension))errs.push("invalid extension: "+key);
+  if(!/^[a-z0-9._-]{1,16}$/.test(f.extension))errs.push("invalid extension: "+key);
   if(!engineMap.has(f.engine_id))errs.push("unknown engine: "+key);
   const cases=fixt.cases.filter(x=>x.category===f.category && x.extension===f.extension);
   const gate=evaluate(engineMap.get(f.engine_id),f,cases);
